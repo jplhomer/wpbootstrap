@@ -1,7 +1,9 @@
 <?php
 /*
-Author: Eddie Machado
-URL: htp://themble.com/bones/
+Author: Josh Larson
+URL: http://jplhomer.org
+
+Basesd off of: http://themble.com/bones/
 
 This is where you can drop your custom functions or
 just edit things like thumbnail sizes, header images, 
@@ -11,7 +13,6 @@ sidebars, comments, ect.
 // Get Bones Core Up & Running!
 require_once('library/bones.php');            // core functions (don't remove)
 require_once('library/plugins.php');          // plugins & extra functions (optional)
-require_once('library/custom-post-type.php'); // custom post type example
 
 // Get shortcodes, baby!
 require_once('library/shortcodes.php');			// custom shortcodes
@@ -25,8 +26,9 @@ require_once('library/wpbootstrap-utils.php');
 /************* THUMBNAIL SIZE OPTIONS *************/
 
 // Thumbnail sizes
-add_image_size( 'bones-thumb-600', 600, 150, true );
-add_image_size( 'bones-thumb-300', 300, 100, true );
+add_image_size( 'grid4', 360, 268, true );
+add_image_size( 'grid3', 260, 180, true );
+add_image_size( 'grid2', 160, 120, true );
 /* 
 to add more sizes, simply copy a line from above 
 and change the dimensions & name. As long as you
@@ -55,10 +57,10 @@ function bones_register_sidebars() {
     	'id' => 'sidebar1',
     	'name' => 'Sidebar 1',
     	'description' => 'The first (primary) sidebar.',
-    	'before_widget' => '<div id="%1$s" class="widget %2$s">',
-    	'after_widget' => '</div>',
-    	'before_title' => '<h4 class="widgettitle">',
-    	'after_title' => '</h4>',
+    	'before_widget' => '<div id="%1$s" class="well widget %2$s"><ul class="nav nav-list">',
+    	'after_widget' => '</ul></div>',
+    	'before_title' => '<li class="nav-header">',
+    	'after_title' => '</li>',
     ));
 	
 	register_sidebar( array(
@@ -132,7 +134,7 @@ function bones_register_sidebars() {
     To call the sidebar in your template, you can just copy
     the sidebar.php file and rename it to your sidebar's name.
     So using the above example, it would be:
-    sidebar-sidebar2.php
+*    sidebar-sidebar2.php
     
     */
 } // don't remove this bracket!
@@ -294,5 +296,4 @@ function add_class_attachment_link($html){
 	$html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
     return $html;
 }
-
 ?>
