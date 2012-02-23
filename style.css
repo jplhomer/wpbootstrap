@@ -34,21 +34,34 @@ NOTICE: Removed Bones Theme's LESS CSS setup. Might figure out how to integrate 
     zoom:1;
 }
 
+body { /* for the Static bar */
+	padding-top: 60px;
+}
+@media (max-width: 980px) {
+  body {
+    padding-top: 0;
+  }
+}
+
+.hero-unit {
+	background: whiteSmoke url('jpl_hero_bg.jpg') top right no-repeat;
+}
+
 #main article img{
 	max-width: 100%;
 }
 
-img.alignleft{
+img.alignleft, .alignleft{
 	margin-right: 10px;
 	float: left;
 }
 
-img.alignright{
+img.alignright, .alignright{
 	margin-left: 10px;
 	float: right;
 }
 
-img.aligncenter{
+img.aligncenter, .aligncenter{
 	display: block;
 	margin: 0 auto;
 }
@@ -62,7 +75,7 @@ video {
 	max-width: 100%;
 	height: auto;
 }
-
+/*
 .video-container {
 	position: relative;
 	padding-bottom: 56.25%;
@@ -86,7 +99,7 @@ video {
 	max-width: 100%;
 	margin-bottom: 18px;
 }
-
+*/
 
 /********** PAGE STYLING **********/
 
@@ -169,33 +182,7 @@ li.bypostauthor{
 	margin-bottom: 18px;
 }
 
-/* widget styles */
-
-.widget{
-	margin-bottom: 18px;
-}
-
-#tag-cloud{
-	margin-bottom: 18px;
-}
-
-/* override standard link hover for the tag cloud widget */
-#tag-cloud a:hover,
-.tags a:hover{
-	color: #ffffff;
-	text-decoration: none;
-}
-
 /* change default form padding for search */
-
-.widget_search form{
-	padding-left: 0;
-}
-
-.widget_search input{
-	width: 230px;
-}
-
 .meta {
 	font-style: italic;
 	margin: 15px 0 0;
@@ -216,7 +203,6 @@ footer.page-footer {
 	background: #333;
 	color: #CCC;
 	margin: 30px 0 0;
-	min-height: 150px;
 	padding: 20px 0;
 }
 footer.page-footer #site-generator {
@@ -297,6 +283,46 @@ a.comment-reply-link{
 /* =Widgets
 ----------------------------------------------- */
 
+#sidebar1 {
+	opacity: 0.6;
+	transition: opacity .5s;
+	-moz-transition: opacity .5s; /* Firefox 4 */
+	-webkit-transition: opacity .5s; /* Safari and Chrome */
+	-o-transition: opacity .5s; /* Opera */
+}
+#sidebar1:hover {
+	opacity: 1;
+}
+.widget{
+	margin-bottom: 18px;
+}
+
+.widget.widget_twitter {
+	background: whiteSmoke url('library/images/twitter-bg.png') right no-repeat;
+}
+
+ul.tweets {
+	margin-left: 0;
+	list-style: none;
+}
+
+ul.tweets > li {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 13px;
+	font-style: italic;
+}
+
+#tag-cloud{
+	margin-bottom: 18px;
+}
+
+/* override standard link hover for the tag cloud widget */
+#tag-cloud a:hover,
+.tags a:hover{
+	color: #ffffff;
+	text-decoration: none;
+}
+
 footer.page-footer .widget-title {
 	color: #ccc;
 }
@@ -316,3 +342,73 @@ footer.page-footer .widget_calendar #wp-calendar tfoot td {
 	background: #0b0b0b;
 	border-color: #333;
 }
+
+/* IMAGES */
+.wp-caption {
+	background: #eee;
+	margin-bottom: 1.625em;
+	max-width: 96%;
+	padding: 9px;
+}
+.wp-caption img {
+	display: block;
+	margin: 0 auto;
+	max-width: 98%;
+}
+.wp-caption .wp-caption-text,
+.gallery-caption {
+	color: #666;
+	font-family: Georgia, serif;
+	font-size: 12px;
+}
+.wp-caption .wp-caption-text {
+	margin-bottom: 0.6em;
+	padding: 10px 0 5px 40px;
+	position: relative;
+}
+.wp-caption .wp-caption-text:before {
+	color: #666;
+	content: '\2014';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: bold;
+	margin-right: 5px;
+	position: absolute;
+	left: 10px;
+	top: 7px;
+}
+
+/* For the resume page */
+#resume-tabs {
+	min-height: 500px;
+}
+
+/* For the portfolio thumbnails */
+#portfolio h3 {
+	margin-bottom: 10px;
+}
+#portfolio h5 {
+	margin-bottom: 8px;
+}
+/*
+.video-container {
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	height: 0;
+	overflow: hidden;
+}
+
+.video-container iframe,  
+.video-container object,  
+.video-container embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.video-wrapper {
+	width: 600px;
+	max-width: 100%;
+}*/
