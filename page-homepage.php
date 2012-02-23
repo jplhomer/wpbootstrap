@@ -1,77 +1,47 @@
 <?php
 /*
-Template Name: Homepage
+Template Name: Hero Homepage
 */
 ?>
 
-<?php get_header(); ?>
-			
-			<div id="content" class="clearfix row-fluid">
-			
-				<div id="main" class="span12 clearfix" role="main">
+<?php get_header() ?>
+			<!-- Main hero unit for a primary marketing message or call to action -->
 
-					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-					
-					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
-					
-						<header>
-						
-							<div class="hero-unit">
-							
-								<h1><?php the_title(); ?></h1>
-								
-								<?php echo get_post_meta($post->ID, 'custom_tagline' , true);?>
-							
-							</div>
-						
-						</header>
-						
-						<section class="row-fluid post_content">
-						
-							<div class="span8">
-						
-								<?php the_content(); ?>
-								
-							</div>
-							
-							<?php get_sidebar('sidebar2'); // sidebar 2 ?>
-													
-						</section> <!-- end article header -->
-						
-						<footer>
 			
-							<p class="clearfix"><?php the_tags('<span class="tags">Tags: ', ', ', '</span>'); ?></p>
-							
-						</footer> <!-- end article footer -->
-					
-					</article> <!-- end article -->
-					
-					<?php 
-						// No comments on homepage
-						//comments_template();
-					?>
-					
-					<?php endwhile; ?>	
-					
-					<?php else : ?>
-					
-					<article id="post-not-found">
-					    <header>
-					    	<h1>Not Found</h1>
-					    </header>
-					    <section class="post_content">
-					    	<p>Sorry, but the requested resource was not found on this site.</p>
-					    </section>
-					    <footer>
-					    </footer>
-					</article>
-					
-					<?php endif; ?>
-			
-				</div> <!-- end #main -->
-    
-				<?php //get_sidebar(); // sidebar 1 ?>
-    
-			</div> <!-- end #content -->
+			<!-- load feature from Hero Feature sidebar. If more than one widget, use the carousel -->
+			<?php if ( count_sidebar_widgets('hero-features', false) > 1 ) : ?>
+			<!--<div class="hero-unit">-->
+				<div class="carousel" id="hero-carousel">
+					<!-- Carousel items -->
+					<div class="carousel-inner">
+					<?php dynamic_sidebar( 'hero-features' ); ?>
+					</div>
+					<!-- Carousel nav -->
+					<a class="carousel-control left" href="#hero-carousel" data-slide="prev">&lsaquo;</a>
+					<a class="carousel-control right" href="#hero-carousel" data-slide="next">&rsaquo;</a>
+				</div>
+			<!-- </div> -->
+			<?php elseif ( count_sidebar_widgets('hero-features', false) === 1 ) : // if there's only one widget in the Hero Features sidebar, don't do Carousel ?>
 
+			<?php dynamic_sidebar( 'hero-features' ); // class hero-unit is added via widget ?>
+
+			<?php else : // if no widget has been added to the Hero Features sidebar ?>
+			<div class="hero-unit">
+				<h1>Hello, world!</h1>
+				<p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+				<p>Update this section by going to <strong>Dashboard &rarr; Appearance &rarr; Widgets</strong>. Use the <strong>Hero Feature</strong> sidebar. 
+				<br />Be sure to set the <em>hero-unit</em> class.</p>
+				<p><a class="btn btn-primary btn-large" href="/wp-admin/widgets.php">Do it now &raquo;</a></p>
+			</div>			
+			<?php endif; ?>
+			
+			<!-- Example row of columns -->
+			<div class="row">
+			<?php if ( ! dynamic_sidebar( 'hero-featurettes' ) ) : ?>
+				<div class="alert alert-info">
+					This is where you could start putting featurettes.<br />
+					Add some in <strong>Dashboard &rarr; Appearance &rarr; Widgets</strong>. Use the <strong>Hero Featurettes</strong> sidebar.
+				</div>
+			<?php endif; ?>
+			</div>
 <?php get_footer(); ?>

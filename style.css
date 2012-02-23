@@ -1,14 +1,21 @@
-/*
-Theme Name: wp-bootstrap
-Theme URI: http://320press.com/wpbs
-Description: A simple responsive theme based on twitter's bootstrap framework. Includes multiple page templates, two different sidebars and a theme options panel.
-Version: 2.0
-Author: 320press
-Author URI: http://320press.com
-Tags: black, white, one-column, two-columns, flexible-width, custom-background, custom-colors, custom-menu, full-width-template, theme-options
-License: GNU General Public License v2.0 & Apache License 2.0
-License URI: http://www.gnu.org/licenses/gpl-2.0.html http://www.apache.org/licenses/LICENSE-2.0
-*/
+/******************************************************************
+Theme Name: WP Bootstrap
+Theme URI: http://jplhomer.org
+Description: A simple responsive theme based on the <a href="http://twitter.github.com/bootstrap/index.html">Twitter Bootstrap Framework</a>. Includes multiple page templates, a front page featuring a call-out, and multiple sidebars. Definitely still a work in progress. Built with the <a href="http://themble.com/bones/">Bones Framework</a> and ideas from <a href="https://github.com/320press/wordpress-bootstrap">another Wordpress-Bootstrap framework</a>.
+Author: Josh Larson
+Author URI: http://jplhomer.org
+Version: 1.0
+Tags: black, white, one-column, two-columns, custom-menu, full-width-template, html5, responsive, css3, media queries, mobile
+
+License: WTFPL
+License URI: http://sam.zoy.org/wtfpl/
+Are You Serious? Yes.
+
+NOTICE: Removed Bones Theme's LESS CSS setup. Might figure out how to integrate it into TW Bootstrap at some point... Not today.
+******************************************************************/
+@import 'library/css/bootstrap.min.css'; /* import Twitter Bootstrap */
+
+/********** LAYOUT **********/
 
 /* micro clearfix: http://nicolasgallagher.com/micro-clearfix-hack/ */
 /* For modern browsers */
@@ -25,122 +32,6 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html http://www.apache.org/lice
 /* For IE 6/7 (trigger hasLayout) */
 .clearfix {
     zoom:1;
-}
-
-/* wp-specific classes */
-.wp-caption{
-	
-}
-
-.wp-caption-text{
-	
-}
-
-.sticky{
-	
-}
-
-.gallery-caption{
-	
-}
-
-/* for fun */
-* {
-  -webkit-transition: all 0.2s ease;
-  -moz-transition:    all 0.2s ease;
-  -ms-transition:     all 0.2s ease;
-  -o-transition:      all 0.2s ease;
-}
-
-/* layout */
-
-body{
-	padding-top: 0;
-}
-
-.nav-container{
-	padding-left: 0;
-	padding-right: 0;
-}
-
-#inner-header{
-	width: 100%;
-}
-
-input, textarea, select, .uneditable-input {
-	margin-bottom: 0;
-}
-
-.navbar-form, .navbar-search {
-	margin: 0 0 9px;
-}
-
-.navbar-search{
-	padding-left: 0;
-}
-
-#s{
-	width: 100px;
-}
-
-#content{
-	padding: 10px 0 0;
-}
-
-.more-link{
-	white-space: nowrap;
-}
-
-.footer-links{
-	float: right;
-	margin-bottom: 18px;
-}
-
-#menu-footer-nav{
-	list-style-type: none;
-	margin-left: 0;
-}
-
-#menu-footer-nav li{
-	float: left;
-	margin-left: 10px;
-}
-
-/* post styling */
-
-#main p.meta{
-	font-style: italic;
-	color: #808080;
-}
-
-#main article{
-	margin-bottom: 18px;
-	border-bottom: 1px solid #eeeeee;
-	padding: 0 0 9px;
-}
-
-.sidebar{
-	margin-top: 18px !important;
-}
-
-#main article footer{
-	border-top: none;
-	margin-top: 0;
-	padding-top: 0;
-}
-
-p.tags{
-	line-height: 20px;
-}
-
-div[id*='attachment_']{
-	max-width: 100%;
-	height: 100%;
-}
-
-#credit320{
-	background: url('images/320press_mini.png') no-repeat left top transparent;
-	padding-left: 20px;
 }
 
 #main article img{
@@ -160,10 +51,6 @@ img.alignright{
 img.aligncenter{
 	display: block;
 	margin: 0 auto;
-}
-
-.post header img{
-	margin-bottom: 18px;
 }
 
 .archive #main .post h3{
@@ -200,23 +87,18 @@ video {
 	margin-bottom: 18px;
 }
 
-/* page styling */
+
+/********** PAGE STYLING **********/
 
 .page-template-page-homepage-php #main article{
 	border-bottom: none;
 }
 
-.page-template-page-homepage-php .hero-unit{
-	padding: 1em 0;
-}
-
-.hero-unit h1 {
-	font-size: 3em;
-}
-
 /* comments */
 
-
+#comment-form-title{
+	padding-left: 20px;
+}
 
 #comments{
 	line-height: 24px;
@@ -229,9 +111,9 @@ ol.commentlist ul.children{
 	margin-left: 0;
 }
 
-.comment .vcard div{
-	margin-top: 8px;
-	padding: 0 10px;
+ol.commentlist div.avatar{
+	float: left;
+	text-align:center;
 }
 
 ol.commentlist time{
@@ -246,17 +128,145 @@ ol.commentlist div.comment-author{
 ol.commentlist a.comment-edit-link{
 	color: #ffffff;
 	text-decoration: none;
-	padding-left: 5px;
 }
 
 ol.commentlist span.edit-comment{
 	position: absolute;
 	right: 10px;
-	top: 8px;
+	top: 0;
 }
 
-ol.commentlist li.bypostauthor{
-	background-color: #dddddd;
+li.bypostauthor{
+	background-color: #F0F0F0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#cancel-comment-reply{
+	padding-left: 20px;
+}
+
+#comment-nav ul{
+	list-style-type: none;
+	margin: 0;
+}
+
+#comment-form-elements{
+	list-style-type: none;
+	margin: 0;
+}
+
+/* specific post-type styles */
+
+/* image attachment */
+
+.attachment #main .post_content img{
+	max-width: 100%;
+}
+
+.attachment-img{
+	margin-bottom: 18px;
+}
+
+/* widget styles */
+
+.widget{
+	margin-bottom: 18px;
+}
+
+#tag-cloud{
+	margin-bottom: 18px;
+}
+
+/* override standard link hover for the tag cloud widget */
+#tag-cloud a:hover,
+.tags a:hover{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+/* change default form padding for search */
+
+.widget_search form{
+	padding-left: 0;
+}
+
+.widget_search input{
+	width: 230px;
+}
+
+.meta {
+	font-style: italic;
+	margin: 15px 0 0;
+}
+.page-header {
+	padding-bottom: 5px;
+}
+section.post_content {
+	margin-bottom: 18px;
+	border-bottom: 1px solid #eeeeee;
+	padding: 9px 0px;
+}
+article.post > footer {
+	background: #efefef;
+	margin-bottom: 18px;
+}
+footer.page-footer {
+	background: #333;
+	color: #CCC;
+	margin: 30px 0 0;
+	min-height: 150px;
+	padding: 20px 0;
+}
+footer.page-footer #site-generator {
+	padding: 10px 0;
+	text-align: center;
+}
+/* comments */
+
+#comment-form-title{
+	padding-left: 20px;
+}
+
+#comments{
+	line-height: 24px;
+	margin-bottom: 18px;
+}
+
+ol.commentlist,
+ol.commentlist ul.children{
+	list-style-type: none;
+	margin-left: 0;
+}
+
+ol.commentlist div.avatar{
+	float: left;
+	text-align:center;
+}
+
+ol.commentlist time{
+	font-size: .8em;
+	color: #eeeeee;
+}
+
+ol.commentlist div.comment-author{
+	position: relative;
+}
+
+ol.commentlist a.comment-edit-link{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+ol.commentlist span.edit-comment{
+	position: absolute;
+	right: 10px;
+	top: 0;
+}
+
+li.bypostauthor{
+	background-color: #F0F0F0;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -282,238 +292,27 @@ a.comment-reply-link{
 	margin: 0;
 }
 
-.comment .vcard .avatar{
-	padding-right: 0;
+/* DARK FOOTER STYLES */
+
+/* =Widgets
+----------------------------------------------- */
+
+footer.page-footer .widget-title {
+	color: #ccc;
+}
+footer.page-footer .widget ul li {
+	color: #888;
 }
 
-.comment .vcard .comment-text{
-	margin-left: 0;
+/* Dark Calendar Widget */
+footer.page-footer .widget_calendar #wp-calendar {
+	color: #aaa;
 }
-
-img.avatar{
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #dedede;
-	border-right: 1px solid #dedede;
-	border-left: 1px solid #ddd;
-	
+footer.page-footer .widget_calendar #wp-calendar th {
+	background: #0b0b0b;
+	border-color: #333;
 }
-
-ol.commentlist li{
-	padding-right: 10px;
-	background-color: #F0F0F0;
-}
-
-
-/* specific post-type styles */
-
-/* image attachment */
-
-.attachment #main .post_content img{
-	max-width: 100%;
-}
-
-.ie8 #main .media-grid img{
-	max-height: none !important;
-	max-width: none !important;
-}
-
-.attachment-img{
-	margin-bottom: 18px;
-}
-
-.metadata p.alert-message{
-	margin-right: 0;
-	margin-bottom: 18px;
-}
-
-#gallery-nav{
-	list-style-type: none;
-	margin-left: 0;
-}
-
-li.next a, li.previous a{
-	position: relative;
-}
-
-li.next a:hover:before{
-	content: "\2190";
-	position: absolute;
-	display: block;
-	top: 42%;
-	left: 0;
-	background-color: #BFBFBF;
-	color: #444;
-	width: 20px;
-	height: 20px;
-	padding-left: 5px;
-	text-decoration: none;
-	box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-}
-
-li.previous a:hover:before{
-	content: "\2192";
-	position: absolute;
-	display: block;
-	top: 42%;
-	right: 0;
-	background-color: #BFBFBF;
-	color: #444;
-	width: 20px;
-	height: 20px;
-	padding-left: 5px;
-	text-decoration: none;
-	box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-}
-
-
-/* widget styles */
-
-.widget{
-	margin-bottom: 18px;
-}
-
-.widgettitle{
-	margin-bottom: 9px;
-}
-
-#tag-cloud{
-	margin-bottom: 18px;
-}
-
-/* for some reason the bs version currently available for download doesn't have this style */
-.label{
-	text-transform: uppercase;
-}
-
-/* override standard link hover for the tag cloud widget */
-#tag-cloud a:hover,
-.tags a:hover{
-	color: #ffffff;
-	text-decoration: none;
-}
-
-#tag-cloud a{
-	white-space: pre;
-	text-transform: uppercase;
-}
-
-/* change default form padding for search */
-
-.widget_search form{
-	padding-left: 0;
-}
-
-.widget_search input{
-	width: 121px;
-}
-
-/* calendar widget */
-
-#calendar_wrap{
-	border: 1px solid #ddd;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	padding: 5px;
-}
-
-#wp-calendar{
-	width: 100%;
-	
-}
-
-#wp-calendar caption{
-	font-weight: bold;
-	padding: 8px;
-}
-
-#wp-calendar tr{
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-}
-
-#wp-calendar tr:last-child{
-	border-bottom: none;
-}
-
-#wp-calendar td{
-	text-align: center;
-	padding: 8px 0;
-}
-
-@media only screen and (min-width: 940px) {
-	body{
-		padding-top: 60px;
-	}
-	
-	.container-fluid{
-		max-width: 970px;
-		margin: 0 auto;
-		padding-left: 20px;
-		padding-right: 20px;
-	}
-	
-	#inner-footer{
-		padding: 0;
-	}
-	
-	#content{
-		padding-left: 0;
-		padding-right: 0;
-	}
-	
-	.topbar-inner{
-		padding: 0;
-	}
-	
-	.topbar form.pull-right {
-		float: right;
-	}
-	
-	.navbar-form, .navbar-search {
-		margin-top: 6px;
-		margin-bottom: 0;
-	}
-	
-	.navbar-search{
-		padding-left: 0;
-	}
-	
-	.sidebar{
-		margin-top: 0 !important;
-	}
-	
-	.widget_search input{
-		width: 230px;
-	}
-	
-	.page-template-page-homepage-php .hero-unit{
-		padding: 60px;
-	}
-	
-	.hero-unit h1 {
-		font-size: 60px;
-	}
-	
-	/* hide edit comment button and show on hover on desktop version */
-	.edit-comment{
-		display: none;
-	}
-	
-	.vcard:hover .edit-comment{
-		display: inline-block;
-	}
-	
-	#s{
-		width: 210px;
-	}
-	
-	.widget_search input{
-		width: 203px;
-	}
-	
-	.comment .vcard .comment-text{
-		padding-left: 0;
-		padding-right: 0;
-	}
+footer.page-footer .widget_calendar #wp-calendar tfoot td {
+	background: #0b0b0b;
+	border-color: #333;
 }

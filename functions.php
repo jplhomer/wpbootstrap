@@ -11,32 +11,21 @@ sidebars, comments, ect.
 // Get Bones Core Up & Running!
 require_once('library/bones.php');            // core functions (don't remove)
 require_once('library/plugins.php');          // plugins & extra functions (optional)
+require_once('library/custom-post-type.php'); // custom post type example
 
-// Options panel
-require_once('library/options-panel.php');
+// Get shortcodes, baby!
+require_once('library/shortcodes.php');			// custom shortcodes
 
-// Shortcodes
-require_once('library/shortcodes.php');
+// Get WP Bootstrap specific utilities
+require_once('library/wpbootstrap-utils.php');
 
 // Admin Functions (commented out by default)
 // require_once('library/admin.php');         // custom admin functions
 
-// Custom Backend Footer
-function bones_custom_admin_footer() {
-	echo '<span id="footer-thankyou">Developed by <a href="http://320press.com" target="_blank">320press</a></span>. Built using <a href="http://themble.com/bones" target="_blank">Bones</a>.';
-}
-
-// adding it to the admin area
-add_filter('admin_footer_text', 'bones_custom_admin_footer');
-
-// Set content width
-if ( ! isset( $content_width ) ) $content_width = 580;
-
 /************* THUMBNAIL SIZE OPTIONS *************/
 
 // Thumbnail sizes
-add_image_size( 'wpbs-featured', 580, 300, true );
-add_image_size( 'bones-thumb-600', 600, 150, false );
+add_image_size( 'bones-thumb-600', 600, 150, true );
 add_image_size( 'bones-thumb-300', 300, 100, true );
 /* 
 to add more sizes, simply copy a line from above 
@@ -64,24 +53,64 @@ you like. Enjoy!
 function bones_register_sidebars() {
     register_sidebar(array(
     	'id' => 'sidebar1',
-    	'name' => 'Main Sidebar',
-    	'description' => 'Used on every page BUT the homepage page template.',
+    	'name' => 'Sidebar 1',
+    	'description' => 'The first (primary) sidebar.',
     	'before_widget' => '<div id="%1$s" class="widget %2$s">',
     	'after_widget' => '</div>',
     	'before_title' => '<h4 class="widgettitle">',
     	'after_title' => '</h4>',
     ));
+	
+	register_sidebar( array(
+		'name' => __( 'Hero Features', 'wpbootstrap' ),
+		'id' => 'hero-features',
+		'description' => __( 'The main features shown on the optional Hero Template. Width: 1170px', 'wpbootstrap' ),
+		'before_widget' => '<div class="item">',
+		'after_widget' => '</div>',
+		'before_title' => '<h1>',
+		'after_title' => '</h1>',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Hero Featurettes', 'wpbootstrap' ),
+		'id' => 'hero-featurettes',
+		'description' => __( 'The featurettes shown on the optional Hero Template Width: 370px', 'wpbootstrap' ),
+		'before_widget' => '<aside id="%1$s" class="span4 widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h2 class="widget-title">',
+		'after_title' => '</h2>',
+	) );
     
-    register_sidebar(array(
-    	'id' => 'sidebar2',
-    	'name' => 'Homepage Sidebar',
-    	'description' => 'Used only on the homepage page template.',
-    	'before_widget' => '<div id="%1$s" class="widget %2$s">',
-    	'after_widget' => '</div>',
-    	'before_title' => '<h4 class="widgettitle">',
-    	'after_title' => '</h4>',
-    ));
-    
+		register_sidebar( array(
+		'name' => __( 'Footer Area One', 'wpbootstrap' ),
+		'id' => 'sidebar-3',
+		'description' => __( 'An optional widget area for your site footer', 'wpbootstrap' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h3 class="widget-title">',
+		'after_title' => '</h3>',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Footer Area Two', 'wpbootstrap' ),
+		'id' => 'sidebar-4',
+		'description' => __( 'An optional widget area for your site footer', 'wpbootstrap' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h3 class="widget-title">',
+		'after_title' => '</h3>',
+	) );
+
+	register_sidebar( array(
+		'name' => __( 'Footer Area Three', 'wpbootstrap' ),
+		'id' => 'sidebar-5',
+		'description' => __( 'An optional widget area for your site footer', 'wpbootstrap' ),
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget' => "</aside>",
+		'before_title' => '<h3 class="widget-title">',
+		'after_title' => '</h3>',
+	) );
+	
     /* 
     to add more sidebars or widgetized areas, just copy
     and edit the above sidebar code. In order to call 
@@ -90,7 +119,15 @@ function bones_register_sidebars() {
     Just change the name to whatever your new
     sidebar's id is, for example:
     
-    
+    register_sidebar(array(
+    	'id' => 'sidebar2',
+    	'name' => 'Sidebar 2',
+    	'description' => 'The second (secondary) sidebar.',
+    	'before_widget' => '<div id="%1$s" class="widget %2$s">',
+    	'after_widget' => '</div>',
+    	'before_title' => '<h4 class="widgettitle">',
+    	'after_title' => '</h4>',
+    ));
     
     To call the sidebar in your template, you can just copy
     the sidebar.php file and rename it to your sidebar's name.
@@ -107,17 +144,17 @@ function bones_comments($comment, $args, $depth) {
    $GLOBALS['comment'] = $comment; ?>
 	<li <?php comment_class(); ?>>
 		<article id="comment-<?php comment_ID(); ?>" class="clearfix">
-			<div class="comment-author vcard row-fluid clearfix">
-				<div class="avatar span2">
+			<div class="comment-author vcard row clearfix">
+				<div class="avatar span1">
 					<?php echo get_avatar($comment,$size='75',$default='<path_to_url>' ); ?>
 				</div>
-				<div class="span10 comment-text">
-					<?php printf(__('<h4>%s</h4>','wpbs'), get_comment_author_link()) ?>
-					<?php edit_comment_link(__('Edit','wpbs'),'<span class="edit-comment btn btn-small btn-info"><i class="icon-white icon-pencil"></i>','</span>') ?>
+				<div class="span7">
+					<?php printf(__('<h4>%s</h4>'), get_comment_author_link()) ?>
+					<?php edit_comment_link(__('Edit'),'<span class="edit-comment btn btn-small btn-info">','</span>') ?>
                     
                     <?php if ($comment->comment_approved == '0') : ?>
-       					<div class="alert-message success">
-          				<p><?php _e('Your comment is awaiting moderation.','wpbs') ?></p>
+       					<div class="alert alert-success">
+          				<p><?php _e('Your comment is awaiting moderation.') ?></p>
           				</div>
 					<?php endif; ?>
                     
@@ -125,8 +162,6 @@ function bones_comments($comment, $args, $depth) {
                     
                     <time datetime="<?php echo comment_time('Y-m-j'); ?>"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>"><?php comment_time('F jS, Y'); ?> </a></time>
                     
-                    <!-- removing reply link on each comment since we're not nesting them -->
-					<?php //comment_reply_link(array_merge( $args, array('depth' => $depth, 'max_depth' => $args['max_depth']))) ?>
                 </div>
 			</div>
 		</article>
@@ -138,63 +173,108 @@ function bones_comments($comment, $args, $depth) {
 
 // Search Form
 function bones_wpsearch($form) {
-    $form = '<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
-    <label class="screen-reader-text" for="s">' . __('Search for:', 'bonestheme') . '</label>
-    <input type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="Search the Site..." />
-    <input type="submit" id="searchsubmit" value="'. esc_attr__('Search','wpbs') .'" />
+    $form = '<form class="navbar-search pull-right" role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
+    <input class="search-query" type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="Search" />
     </form>';
     return $form;
 } // don't remove this bracket!
 
-/****************** password protected post form *****/
+/************* HOMEPAGE WIDGET SETUP *****************/
 
-add_filter( 'the_password_form', 'custom_password_form' );
-
-function custom_password_form() {
-	global $post;
-	$label = 'pwbox-'.( empty( $post->ID ) ? rand() : $post->ID );
-	$o = '<div class="clearfix"><form class="protected-post-form" action="' . get_option('siteurl') . '/wp-pass.php" method="post">
-	' . __( "<p>This post is password protected. To view it please enter your password below:</p>" ,'wpbs') . '
-	<label for="' . $label . '">' . __( "Password:" ,'wpbs') . ' </label><div class="input"><input name="post_password" id="' . $label . '" type="password" size="20" /><input type="submit" name="Submit" class="btn btn-primary" value="' . esc_attr__( "Submit",'wpbs' ) . '" /></div>
-	</form></div>
-	';
-	return $o;
+/** 
+ * Function to count sidebar widgets
+ * Because it's awesome
+ * Since WP Bootstrap 0.1
+ */
+function count_sidebar_widgets( $sidebar_id, $echo = true ) {
+    $the_sidebars = wp_get_sidebars_widgets();
+    if( !isset( $the_sidebars[$sidebar_id] ) )
+        return __( 'Invalid sidebar ID' );
+    if( $echo )
+        echo count( $the_sidebars[$sidebar_id] );
+    else
+        return count( $the_sidebars[$sidebar_id] );
 }
 
-/*********** update standard wp tag cloud widget so it looks better ************/
+/**
+ * Add "first" and "last" CSS classes to dynamic sidebar widgets. Also adds numeric index class for each widget (widget-1, widget-2, etc.)
+ * Source: http://wordpress.org/support/topic/how-to-first-and-last-css-classes-for-sidebar-widgets
+ */
+function widget_first_last_classes($params) {
 
-add_filter( 'widget_tag_cloud_args', 'my_widget_tag_cloud_args' );
+	global $my_widget_num; // Global a counter array
+	$this_id = $params[0]['id']; // Get the id for the current sidebar we're processing
+	$arr_registered_widgets = wp_get_sidebars_widgets(); // Get an array of ALL registered widgets	
 
-function my_widget_tag_cloud_args( $args ) {
-	$args['number'] = 20; // show less tags
-	$args['largest'] = 9.75; // make largest and smallest the same - i don't like the varying font-size look
-	$args['smallest'] = 9.75;
-	$args['unit'] = 'px';
-	return $args;
+	if(!$my_widget_num) {// If the counter array doesn't exist, create it
+		$my_widget_num = array();
+	}
+
+	if(!isset($arr_registered_widgets[$this_id]) || !is_array($arr_registered_widgets[$this_id])) { // Check if the current sidebar has no widgets
+		return $params; // No widgets in this sidebar... bail early.
+	}
+
+	if(isset($my_widget_num[$this_id])) { // See if the counter array has an entry for this sidebar
+		$my_widget_num[$this_id] ++;
+	} else { // If not, create it starting with 1
+		$my_widget_num[$this_id] = 1;
+	}
+
+	$class = 'class="widget-' . $my_widget_num[$this_id] . ' '; // Add a widget number class for additional styling options
+
+	if($my_widget_num[$this_id] == 1) { // If this is the first widget
+		$class .= 'widget-first ';
+	} elseif($my_widget_num[$this_id] == count($arr_registered_widgets[$this_id])) { // If this is the last widget
+		$class .= 'widget-last ';
+	}
+	
+	if(($my_widget_num[$this_id] == 1) && ($this_id == 'hero-features')) { // if it's the first one in the hero-features sidebar
+		$class .= 'active '; // add the active class for the carousel
+	}
+
+	$params[0]['before_widget'] = preg_replace('/class=\"/', "$class", $params[0]['before_widget'], 1);
+	return $params;
+
 }
+add_filter('dynamic_sidebar_params','widget_first_last_classes');
 
-add_filter('wp_tag_cloud','wp_tag_cloud_filter', 10, 2);
+/**
+ * Add predetermined classes to widgets for the choosing
+ * Source: http://ednailor.com/2011/01/24/adding-custom-css-classes-to-sidebar-widgets/
+ */
 
-function wp_tag_cloud_filter($return, $args)
-{
-  return '<div id="tag-cloud">'.$return.'</div>';
+function wpbootstrap_widget_form_extend( $instance, $widget ) {
+	/* Allows User to Add Custom CSS Classes */
+	$row .= "\t<p><em>Use 'hero-unit' for the standard hero slide.</em></p><input type='text'   name='widget-{$widget->id_base}[{$widget->number}][classes]'   id='widget-{$widget->id_base}-{$widget->number}-classes'   class='widefat' value='{$instance['classes']}'/>\n";
+	$row .= "</p>\n";
+	
+	echo $row;
+	return $instance;
 }
+add_filter('widget_form_callback', 'wpbootstrap_widget_form_extend', 10, 2);
+
+function wpbootstrap_widget_update( $instance, $new_instance ) {
+	$instance['classes'] = $new_instance['classes'];
+	return $instance;
+}
+add_filter( 'widget_update_callback', 'wpbootstrap_widget_update', 10, 2 );
+
+function wpbootstrap_dynamic_sidebar_params( $params ) {
+	global $wp_registered_widgets;
+	$widget_id    = $params[0]['widget_id'];
+	$widget_obj    = $wp_registered_widgets[$widget_id];
+	$widget_opt    = get_option($widget_obj['callback'][0]->option_name);
+	$widget_num    = $widget_obj['params'][0]['number'];
+	
+	if ( isset($widget_opt[$widget_num]['classes']) && !empty($widget_opt[$widget_num]['classes']) )
+	$params[0]['before_widget'] = preg_replace( '/class="/', "class=\"{$widget_opt[$widget_num]['classes']} ", $params[0]['before_widget'], 1 );
+	
+	return $params;
+}
+add_filter( 'dynamic_sidebar_params', 'wpbootstrap_dynamic_sidebar_params' );
 
 // Enable shortcodes in widgets
 add_filter('widget_text', 'do_shortcode');
-
-// Disable jump in 'read more' link
-function remove_more_jump_link($link) {
-	$offset = strpos($link, '#more-');
-	if ($offset) {
-		$end = strpos($link, '"',$offset);
-	}
-	if ($end) {
-		$link = substr_replace($link, '', $offset, $end-$offset);
-	}
-	return $link;
-}
-add_filter('the_content_more_link', 'remove_more_jump_link');
 
 // Remove height/width attributes on images so they can be responsive
 add_filter( 'post_thumbnail_html', 'remove_thumbnail_dimensions', 10 );
@@ -205,170 +285,14 @@ function remove_thumbnail_dimensions( $html ) {
     return $html;
 }
 
-// Add the Meta Box to the homepage template
-function add_homepage_meta_box() {  
-    add_meta_box(  
-        'homepage_meta_box', // $id  
-        'Custom Fields', // $title  
-        'show_homepage_meta_box', // $callback  
-        'page', // $page  
-        'normal', // $context  
-        'high'); // $priority  
-}  
-add_action('add_meta_boxes', 'add_homepage_meta_box');
+// Add "thumbnail" class
+add_filter('wp_get_attachment_link','add_class_attachment_link',10,1);
 
-// Field Array  
-$prefix = 'custom_';  
-$custom_meta_fields = array(  
-    array(  
-        'label'=> 'Homepage tagline area',  
-        'desc'  => 'Displayed underneath page title. Only used on homepage template. HTML can be used.',  
-        'id'    => $prefix.'tagline',  
-        'type'  => 'textarea' 
-    )  
-);  
-
-// The Homepage Meta Box Callback  
-function show_homepage_meta_box() {  
-global $custom_meta_fields, $post;  
-// Use nonce for verification  
-echo '<input type="hidden" name="custom_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';  
-  
-    // Begin the field table and loop  
-    echo '<table class="form-table">';  
-    foreach ($custom_meta_fields as $field) {  
-        // get value of this field if it exists for this post  
-        $meta = get_post_meta($post->ID, $field['id'], true);  
-        // begin a table row with  
-        echo '<tr> 
-                <th><label for="'.$field['id'].'">'.$field['label'].'</label></th> 
-                <td>';  
-                switch($field['type']) {  
-                    // text  
-                    case 'text':  
-                        echo '<input type="text" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="60" /> 
-                            <br /><span class="description">'.$field['desc'].'</span>';  
-                    break;
-                    
-                    // textarea  
-                    case 'textarea':  
-                        echo '<textarea name="'.$field['id'].'" id="'.$field['id'].'" cols="80" rows="4">'.$meta.'</textarea> 
-                            <br /><span class="description">'.$field['desc'].'</span>';  
-                    break;  
-                } //end switch  
-        echo '</td></tr>';  
-    } // end foreach  
-    echo '</table>'; // end table  
-}  
-
-// Save the Data  
-function save_homepage_meta($post_id) {  
-    global $custom_meta_fields;  
-  
-    // verify nonce  
-    if (!wp_verify_nonce($_POST['custom_meta_box_nonce'], basename(__FILE__)))  
-        return $post_id;  
-    // check autosave  
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)  
-        return $post_id;  
-    // check permissions  
-    if ('page' == $_POST['post_type']) {  
-        if (!current_user_can('edit_page', $post_id))  
-            return $post_id;  
-        } elseif (!current_user_can('edit_post', $post_id)) {  
-            return $post_id;  
-    }  
-  
-    // loop through fields and save the data  
-    foreach ($custom_meta_fields as $field) {  
-        $old = get_post_meta($post_id, $field['id'], true);  
-        $new = $_POST[$field['id']];  
-        if ($new && $new != $old) {  
-            update_post_meta($post_id, $field['id'], $new);  
-        } elseif ('' == $new && $old) {  
-            delete_post_meta($post_id, $field['id'], $old);  
-        }  
-    } // end foreach  
-}  
-add_action('save_post', 'save_homepage_meta');  
-
-// Add thumbnail class to thumbnail links
 function add_class_attachment_link($html){
     $postid = get_the_ID();
     $html = str_replace('<a','<a class="thumbnail"',$html);
+	$html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
     return $html;
 }
-add_filter('wp_get_attachment_link','add_class_attachment_link',10,1);
-
-// Menu output mods
-class description_walker extends Walker_Nav_Menu
-{
-      function start_el(&$output, $item, $depth, $args)
-      {
-			global $wp_query;
-			$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-			
-			$class_names = $value = '';
-			
-			// If the item has children, add the dropdown class for bootstrap
-			if ( $args->has_children ) {
-				$class_names = "dropdown ";
-			}
-			
-			$classes = empty( $item->classes ) ? array() : (array) $item->classes;
-			
-			$class_names .= join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) );
-			$class_names = ' class="'. esc_attr( $class_names ) . '"';
-           
-           	$output .= $indent . '<li id="menu-item-'. $item->ID . '"' . $value . $class_names .'>';
-
-           	$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-           	$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-           	$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
-           	$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-           	// if the item has children add these two attributes to the anchor tag
-           	if ( $args->has_children ) {
-				$attributes .= 'class="dropdown-toggle" data-toggle="dropdown"';
-			}
-
-            $item_output = $args->before;
-            $item_output .= '<a'. $attributes .'>';
-            $item_output .= $args->link_before .apply_filters( 'the_title', $item->title, $item->ID );
-            $item_output .= $args->link_after;
-            // if the item has children add the caret just before closing the anchor tag
-            if ( $args->has_children ) {
-            	$item_output .= '<b class="caret"></b></a>';
-            }
-            else{
-            	$item_output .= '</a>';
-            }
-            $item_output .= $args->after;
-
-            $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-            }
-            
-        function start_lvl(&$output, $depth) {
-            $indent = str_repeat("\t", $depth);
-            $output .= "\n$indent<ul class=\"dropdown-menu\">\n";
-        }
-            
-      	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output )
-      	    {
-      	        $id_field = $this->db_fields['id'];
-      	        if ( is_object( $args[0] ) ) {
-      	            $args[0]->has_children = ! empty( $children_elements[$element->$id_field] );
-      	        }
-      	        return parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
-      	    }
-      	
-            
-}
-
-
-add_editor_style('editor-style.css');
-
-
-
-
 
 ?>

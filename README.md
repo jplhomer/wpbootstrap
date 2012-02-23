@@ -1,7 +1,7 @@
-WORDPRESS BOOTSTRAP
+WP BOOTSTRAP
 ===================
 
-Twitter's bootstrap (http://twitter.github.com/bootstrap) in Wordpress theme form. Using Eddie Machado's Bones for a starting point (https://github.com/eddiemachado/bones). 
+Twitter's bootstrap (http://twitter.github.com/bootstrap) in Wordpress theme form. Using Eddie Machado's Bones for a starting point (https://github.com/eddiemachado/bones) as well as 320Press' original theme (https://github.com/320press/wordpress-bootstrap). 
 
 FEATURES
 ________

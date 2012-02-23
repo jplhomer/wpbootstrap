@@ -26,11 +26,12 @@ function disable_default_dashboard_widgets() {
 
 	// remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
 	remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');   // Recent Drafts Widget
-	remove_meta_box('dashboard_primary', 'dashboard', 'core');         // 
-	remove_meta_box('dashboard_secondary', 'dashboard', 'core');       //
+	remove_meta_box('dashboard_primary', 'dashboard', 'core');         // Wordpress Blog Feed
+	remove_meta_box('dashboard_secondary', 'dashboard', 'core');       // Other Wordpress News
 	
 	// removing plugin dashboard boxes 
 	remove_meta_box('yoast_db_widget', 'dashboard', 'normal');         // Yoast's SEO Plugin Widget
+	remove_meta_box('rg_forms_dashboard', 'dashboard', 'norma;');      // Gravity Forms Widget
 	
 	/* 
 	have more plugin widgets you'd like to remove? 

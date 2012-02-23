@@ -1,28 +1,41 @@
-			<footer role="contentinfo">
-			
-				<div id="inner-footer" class="clearfix">
-					
-					<nav class="clearfix">
-						<?php bones_footer_links(); // Adjust using Menus in Wordpress Admin ?>
-					</nav>
-					
-					<p class="pull-right"><a href="http://320press.com" id="credit320" title="By the dudes of 320press">320press</a></p>
-			
-					<p class="attribution">&copy; <?php bloginfo('name'); ?></p>
-				
-				</div> <!-- end #inner-footer -->
-				
-			</footer> <!-- end footer -->
-		
 		</div> <!-- end #container -->
+
+		<footer role="contentinfo" class="page-footer">
+		
+			<div id="inner-footer" class="container clearfix">
+
+				<div id="supplementary" class="row">
+					<?php if ( is_active_sidebar( 'sidebar-3' ) ) : ?>
+					<div id="first" class="widget-area span4" role="complementary">
+						<?php dynamic_sidebar( 'sidebar-3' ); ?>
+					</div><!-- #first .widget-area -->
+					<?php endif; ?>
+				
+					<?php if ( is_active_sidebar( 'sidebar-4' ) ) : ?>
+					<div id="second" class="widget-area span4" role="complementary">
+						<?php dynamic_sidebar( 'sidebar-4' ); ?>
+					</div><!-- #second .widget-area -->
+					<?php endif; ?>
+				
+					<?php if ( is_active_sidebar( 'sidebar-5' ) ) : ?>
+					<div id="third" class="widget-area span4" role="complementary">
+						<?php dynamic_sidebar( 'sidebar-5' ); ?>
+					</div><!-- #third .widget-area -->
+					<?php endif; ?>
+				</div><!-- #supplementary -->
+		
+				<p class="attribution row">
+					<span class="pull-right">Developed by <a href="http://jplhomer.org/">Joshua P. Larson</a> using the <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Twitter Bootstrap framework</a>.</span>
+					&copy; <?php bloginfo('name'); ?> <?php _e("is powered by", "bonestheme"); ?> <a href="http://wordpress.org/" title="WordPress">WordPress</a> <span class="amp">&</span> <a href="http://www.themble.com/bones" title="Bones" class="footer_bones_link">Bones</a>.
+				</p>
+			
+			</div> <!-- end #inner-footer -->
+			
+		</footer> <!-- end footer -->
+		
 		
 		<!-- scripts are now optimized via Modernizr.load -->	
 		<script src="<?php echo get_template_directory_uri(); ?>/library/js/scripts.js"></script>
-		
-		<!--[if lt IE 7 ]>
-  			<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-  			<script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
-		<![endif]-->
 		
 		<?php wp_footer(); // js scripts are inserted using this function ?>
 

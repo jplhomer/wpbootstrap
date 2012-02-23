@@ -1,20 +1,20 @@
 <?php get_header(); ?>
 			
-			<div id="content" class="clearfix row-fluid">
+			<div id="content" class="row">
 			
 				<div id="main" class="span8 clearfix" role="main">
 				
-					<div class="page-header"><h1 class=""><span>Search Results for:</span> <?php echo esc_attr(get_search_query()); ?></h1></div>
-
+					<h1 class="archive_title"><span>Search Results for:</span> <?php echo esc_attr(get_search_query()); ?></h1>
+				
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
 					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 						
-						<header>
+						<header class="page-header">
 							
 							<h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 							
-							<p class="meta"><?php _e("Posted", "bonestheme"); ?> <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate><?php the_time('F jS, Y'); ?></time> <?php _e("by", "bonestheme"); ?> <?php the_author_posts_link(); ?> <span class="amp">&</span> <?php _e("filed under", "bonestheme"); ?> <?php the_category(', '); ?>.</p>
+							<?php wpbootstrap_posted_on(); ?>							
 						
 						</header> <!-- end article header -->
 					
@@ -38,9 +38,9 @@
 						
 					<?php } else { // if it is disabled, display regular wp prev & next links ?>
 						<nav class="wp-prev-next">
-							<ul class="clearfix">
-								<li class="prev-link"><?php next_posts_link(_e('&laquo; Older Entries', "bonestheme")) ?></li>
-								<li class="next-link"><?php previous_posts_link(_e('Newer Entries &raquo;', "bonestheme")) ?></li>
+							<ul class="pager clearfix">
+								<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "bonestheme")) ?></li>
+								<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "bonestheme")) ?></li>
 							</ul>
 						</nav>
 					<?php } ?>			
@@ -50,21 +50,24 @@
 					<!-- this area shows up if there are no results -->
 					
 					<article id="post-not-found">
-					    <header>
-					    	<h1>No Results Found</h1>
-					    </header>
-					    <section class="post_content">
-					    	<p>Sorry, but the requested resource was not found on this site.</p>
-					    </section>
-					    <footer>
-					    </footer>
+						<header>
+							<h1>No Results Found</h1>
+						</header>
+						<section class="post_content">
+							<p>Sorry, but the requested resource was not found on this site.</p>
+						</section>
+						<footer>
+						</footer>
 					</article>
 					
 					<?php endif; ?>
-			
+				
 				</div> <!-- end #main -->
-    			
-    			<?php get_sidebar(); // sidebar 1 ?>
+				
+
+					
+				<?php get_sidebar(); ?>
+							
     
 			</div> <!-- end #content -->
 

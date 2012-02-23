@@ -8,7 +8,9 @@ The comments page for Bones
     die ('Please do not load this page directly. Thanks!');
 
   if ( post_password_required() ) { ?>
-  	<div class="alert alert-info">This post is password protected. Enter the password to view comments.</div>
+  	<div class="help">
+    	<p class="nocomments">This post is password protected. Enter the password to view comments.</p>
+  	</div>
   <?php
     return;
   }
@@ -18,24 +20,24 @@ The comments page for Bones
 
 <?php if ( have_comments() ) : ?>
 	
-	<h3 id="comments"><?php comments_number('<span>No</span> Responses', '<span>One</span> Response', '<span>%</span> Responses' );?> to &#8220;<?php the_title(); ?>&#8221;</h3>
+	<h3 id="comments" class="h2"><?php comments_number('<span>No</span> Responses', '<span>One</span> Response', '<span>%</span> Responses' );?> to &#8220;<?php the_title(); ?>&#8221;</h3>
 
 	<nav id="comment-nav">
-		<ul class="clearfix">
-	  		<li><?php previous_comments_link() ?></li>
-	  		<li><?php next_comments_link() ?></li>
+		<ul class="pager">
+	  		<li class="previous"><?php previous_comments_link() ?></li>
+	  		<li class="next"><?php next_comments_link() ?></li>
 	 	</ul>
 	</nav>
 	
 	<ol class="commentlist">
 		<?php wp_list_comments('type=comment&callback=bones_comments'); ?>
 	</ol>
-	
+
 	<nav id="comment-nav">
-		<ul class="clearfix">
-	  		<li><?php previous_comments_link() ?></li>
-	  		<li><?php next_comments_link() ?></li>
-		</ul>
+		<ul class="pager">
+	  		<li class="previous"><?php previous_comments_link() ?></li>
+	  		<li class="next"><?php next_comments_link() ?></li>
+	 	</ul>
 	</nav>
   
 	<?php else : // this is displayed if there are no comments so far ?>
@@ -43,21 +45,9 @@ The comments page for Bones
 	<?php if ( comments_open() ) : ?>
     	<!-- If comments are open, but there are no comments. -->
 
-	<?php else : // comments are closed 
-	?>
-	
-	<?php
-		$suppress_comments_message = of_get_option('suppress_comments_message');
-
-		if (is_page() && $suppress_comments_message) :
-	?>
-			
-		<?php else : ?>
-		
-			<!-- If comments are closed. -->
-			<p class="alert alert-info">Comments are closed.</p>
-			
-		<?php endif; ?>
+	<?php else : // comments are closed ?>
+	<!-- If comments are closed. -->
+	<p class="alert alert-info">Comments are closed.</p>
 
 	<?php endif; ?>
 
@@ -68,79 +58,60 @@ The comments page for Bones
 
 <section id="respond" class="respond-form">
 
-	<h3 id="comment-form-title"><?php comment_form_title( 'Leave a Reply', 'Leave a Reply to %s' ); ?></h3>
+	<h3 id="comment-form-title" class="h2"><?php comment_form_title( 'Leave a Reply', 'Leave a Reply to %s' ); ?></h3>
 
 	<div id="cancel-comment-reply">
 		<p class="small"><?php cancel_comment_reply_link(); ?></p>
 	</div>
 
 	<?php if ( get_option('comment_registration') && !is_user_logged_in() ) : ?>
-  	<div class="help">
+  	<div class="alert">
   		<p>You must be <a href="<?php echo wp_login_url( get_permalink() ); ?>">logged in</a> to post a comment.</p>
   	</div>
 	<?php else : ?>
 
-	<form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" class="form-vertical" id="commentform">
+	<form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
 
 	<?php if ( is_user_logged_in() ) : ?>
 
-	<p class="comments-logged-in-as">Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></p>
+	<div class="alert alert-info">Logged in as <a href="<?php echo get_option('siteurl'); ?>/wp-admin/profile.php"><?php echo $user_identity; ?></a>. <a class="btn btn-danger" href="<?php echo wp_logout_url(get_permalink()); ?>" title="Log out of this account">Log out &raquo;</a></div>
 
 	<?php else : ?>
 	
 	<ul id="comment-form-elements" class="clearfix">
 		
 		<li>
-			<div class="control-group">
-			  <label for="author">Name <?php if ($req) echo "(required)"; ?></label>
-			  <div class="input-prepend">
-			  	<span class="add-on"><i class="icon-user"></i></span>
-			  	<input type="text" name="author" id="author" value="<?php echo esc_attr($comment_author); ?>" placeholder="Your Name" tabindex="1" <?php if ($req) echo "aria-required='true'"; ?> />
-			  </div>
-		  	</div>
+		  <label for="author">Name <?php if ($req) echo "(required)"; ?></label>
+		  <input type="text" name="author" id="author" value="<?php echo esc_attr($comment_author); ?>" placeholder="Your Name" tabindex="1" <?php if ($req) echo "aria-required='true'"; ?> />
 		</li>
 		
 		<li>
-			<div class="control-group">
-			  <label for="email">Mail <?php if ($req) echo "(required)"; ?></label>
-			  <div class="input-prepend">
-			  	<span class="add-on"><i class="icon-envelope"></i></span>
-			  	<input type="email" name="email" id="email" value="<?php echo esc_attr($comment_author_email); ?>" placeholder="Your Email" tabindex="2" <?php if ($req) echo "aria-required='true'"; ?> />
-			  	<span class="help-inline">(will not be published)</span>
-			  </div>
-		  	</div>
+		  <label for="email">Mail <?php if ($req) echo "(required)"; ?></label>
+		  <input type="email" name="email" id="email" value="<?php echo esc_attr($comment_author_email); ?>" placeholder="Your Email" tabindex="2" <?php if ($req) echo "aria-required='true'"; ?> />
+		  <small>(will not be published)</small>
 		</li>
 		
 		<li>
-			<div class="control-group">
-			  <label for="url">Website</label>
-			  <div class="input-prepend">
-			  <span class="add-on"><i class="icon-home"></i></span>
-			  	<input type="url" name="url" id="url" value="<?php echo esc_attr($comment_author_url); ?>" placeholder="Your Website" tabindex="3" />
-			  </div>
-		  	</div>
+		  <label for="url">Website</label>
+		  <input type="url" name="url" id="url" value="<?php echo esc_attr($comment_author_url); ?>" placeholder="Your Website" tabindex="3" />
 		</li>
 		
 	</ul>
 
 	<?php endif; ?>
 	
-	<div class="clearfix">
-		<div class="input">
-			<textarea name="comment" id="comment" placeholder="Your Comment Here..." tabindex="4"></textarea>
-		</div>
-	</div>
+	<p><textarea name="comment" id="comment" placeholder="Your Comment Here..." tabindex="4"></textarea></p>
 	
-	<div class="form-actions">
-	  <input class="btn btn-primary" name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+	<p>
+	  <input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
 	  <?php comment_id_fields(); ?>
+	</p>
+	
+	<div class="help">
+		<p id="allowed_tags" class="small"><strong>XHTML:</strong> You can use these tags: <code><?php echo allowed_tags(); ?></code></p>
 	</div>
 	
-	<?php 
-		//comment_form();
-		do_action('comment_form()', $post->ID); 
-	
-	?>
+	<?php do_action('comment_form', $post->ID); ?>
 	
 	</form>
 	

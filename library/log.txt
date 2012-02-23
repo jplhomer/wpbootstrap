@@ -12,6 +12,23 @@ Author: Eddie Machado
 BONES CHANGE LOG & HISTORY
 ******************************************************************/
 
+/* v1.1 updates */
+- updated normalize.css
+- added classes to html5 elements for IE & faster CSS (header, nav, footer)
+- reformatted css into less stylesheets
+- reformatted css into scss stylesheets
+- streamlined old-css and archived it
+- separated stylesheets into base.css (for mobile) and everything else (style.css)
+- added ie stylesheet
+- updated jQuery
+- updated Modernizr
+- added HTML5 placeholder fallback 
+- added respond.js as a fallback
+- removed imgsizr script
+- added orientation change fix by scottjehl :)
+- returned the title tag to a simple form
+- remove the meta so it works better with SEO plugins
+
 /* v1.09 more updates */
 - updated admin.php to include custom widget examples, admin login styles, and admin footer
 - login.css added for custom login styles
