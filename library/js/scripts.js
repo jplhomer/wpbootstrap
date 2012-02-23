@@ -24,7 +24,39 @@ Modernizr.load([
 $(document).ready(function() {
 	
 	// add all your scripts here
+
+	// modify tag cloud links to match up with twitter bootstrap
+	$("#tag-cloud a").each(function() {
+	    addTwitterBSClass(this);
+	    return true;
+	});
 	
+	$(".tag-links a, .cat-links a").each(function() {
+		$(this).addClass("label");
+		return true;
+	});
+			
+	$("ol.commentlist a.comment-reply-link").each(function() {
+		$(this).addClass('btn btn-success btn-small');
+		return true;
+	});
+	
+	$("[rel='tooltip']").tooltip();
+	
+	$(".widget_categories > ul > ul, .widget_archive > ul > ul").addClass('nav nav-list');
+	
+	$("body").fitVids();
+	
+	// Analytics
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-6141015-3']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
  
 }); /* end of as page load scripts */
 
@@ -141,23 +173,3 @@ function addTwitterBSClass(thisObj) {
   	$(thisObj).addClass('label');
   return true;
 }
-
-// as the page loads, cal these scripts
-$(document).ready(function() {
-
-	// modify tag cloud links to match up with twitter bootstrap
-	$("#tag-cloud a").each(function() {
-	    addTwitterBSClass(this);
-	    return true;
-	});
-	
-	$(".tag-links a, .cat-links a").each(function() {
-		$(this).addClass("label");
-		return true;
-	});
-			
-	$("ol.commentlist a.comment-reply-link").each(function() {
-		$(this).addClass('btn btn-success btn-small');
-		return true;
-	});
-});
