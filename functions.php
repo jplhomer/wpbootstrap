@@ -20,6 +20,9 @@ require_once('library/shortcodes.php');			// custom shortcodes
 // Get WP Bootstrap specific utilities
 require_once('library/wpbootstrap-utils.php');
 
+// Options panel
+require_once('library/options-panel.php');
+
 // Admin Functions (commented out by default)
 // require_once('library/admin.php');         // custom admin functions
 
