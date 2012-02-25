@@ -82,39 +82,6 @@ function wpbootstrap_url_grabber() {
 	return esc_url_raw( $matches[1] );
 }
 
-/**
- * Count the number of footer sidebars to enable dynamic classes for the footer
- */
-function wpbootstrap_footer_sidebar_class() {
-	$count = 0;
-
-	if ( is_active_sidebar( 'sidebar-3' ) )
-		$count++;
-
-	if ( is_active_sidebar( 'sidebar-4' ) )
-		$count++;
-
-	if ( is_active_sidebar( 'sidebar-5' ) )
-		$count++;
-
-	$class = '';
-
-	switch ( $count ) {
-		case '1':
-			$class = 'one';
-			break;
-		case '2':
-			$class = 'two';
-			break;
-		case '3':
-			$class = 'three';
-			break;
-	}
-
-	if ( $class )
-		echo 'class="row"'; // . $class . '"';
-}
-
 if ( ! function_exists( 'wpbootstrap_posted_on' ) ) :
 /**
  * Prints HTML with meta information for the current post-date/time and author.
@@ -192,4 +159,122 @@ class Add_Submenu_Class extends Walker_Nav_Menu {
     $output .= "\n$indent<ul class=\"dropdown-menu\">\n";
   }
 }
+
+
+/************* HOMEPAGE WIDGET SETUP *****************/
+
+/** 
+ * Function to count sidebar widgets
+ * Because it's awesome
+ * Since WP Bootstrap 0.1
+ */
+function count_sidebar_widgets( $sidebar_id, $echo = true ) {
+    $the_sidebars = wp_get_sidebars_widgets();
+    if( !isset( $the_sidebars[$sidebar_id] ) )
+        return __( 'Invalid sidebar ID' );
+    if( $echo )
+        echo count( $the_sidebars[$sidebar_id] );
+    else
+        return count( $the_sidebars[$sidebar_id] );
+}
+
+/**
+ * Add "first" and "last" CSS classes to dynamic sidebar widgets. Also adds numeric index class for each widget (widget-1, widget-2, etc.)
+ * Source: http://wordpress.org/support/topic/how-to-first-and-last-css-classes-for-sidebar-widgets
+ */
+function widget_first_last_classes($params) {
+
+	global $my_widget_num; // Global a counter array
+	$this_id = $params[0]['id']; // Get the id for the current sidebar we're processing
+	$arr_registered_widgets = wp_get_sidebars_widgets(); // Get an array of ALL registered widgets	
+
+	if(!$my_widget_num) {// If the counter array doesn't exist, create it
+		$my_widget_num = array();
+	}
+
+	if(!isset($arr_registered_widgets[$this_id]) || !is_array($arr_registered_widgets[$this_id])) { // Check if the current sidebar has no widgets
+		return $params; // No widgets in this sidebar... bail early.
+	}
+
+	if(isset($my_widget_num[$this_id])) { // See if the counter array has an entry for this sidebar
+		$my_widget_num[$this_id] ++;
+	} else { // If not, create it starting with 1
+		$my_widget_num[$this_id] = 1;
+	}
+
+	$class = 'class="widget-' . $my_widget_num[$this_id] . ' '; // Add a widget number class for additional styling options
+
+	if($my_widget_num[$this_id] == 1) { // If this is the first widget
+		$class .= 'widget-first ';
+	} elseif($my_widget_num[$this_id] == count($arr_registered_widgets[$this_id])) { // If this is the last widget
+		$class .= 'widget-last ';
+	}
+	
+	if(($my_widget_num[$this_id] == 1) && ($this_id == 'hero-features')) { // if it's the first one in the hero-features sidebar
+		$class .= 'active '; // add the active class for the carousel
+	}
+
+	$params[0]['before_widget'] = preg_replace('/class=\"/', "$class", $params[0]['before_widget'], 1);
+	return $params;
+
+}
+add_filter('dynamic_sidebar_params','widget_first_last_classes');
+
+/**
+ * Add predetermined classes to widgets for the choosing
+ * Source: http://ednailor.com/2011/01/24/adding-custom-css-classes-to-sidebar-widgets/
+ */
+
+function wpbootstrap_widget_form_extend( $instance, $widget ) {
+	/* Allows User to Add Custom CSS Classes */
+	$row .= "\t<p><em>Use 'hero-unit' for the standard hero slide.</em></p><input type='text'   name='widget-{$widget->id_base}[{$widget->number}][classes]'   id='widget-{$widget->id_base}-{$widget->number}-classes'   class='widefat' value='{$instance['classes']}'/>\n";
+	$row .= "</p>\n";
+	
+	echo $row;
+	return $instance;
+}
+add_filter('widget_form_callback', 'wpbootstrap_widget_form_extend', 10, 2);
+
+function wpbootstrap_widget_update( $instance, $new_instance ) {
+	$instance['classes'] = $new_instance['classes'];
+	return $instance;
+}
+add_filter( 'widget_update_callback', 'wpbootstrap_widget_update', 10, 2 );
+
+function wpbootstrap_dynamic_sidebar_params( $params ) {
+	global $wp_registered_widgets;
+	$widget_id    = $params[0]['widget_id'];
+	$widget_obj    = $wp_registered_widgets[$widget_id];
+	$widget_opt    = get_option($widget_obj['callback'][0]->option_name);
+	$widget_num    = $widget_obj['params'][0]['number'];
+	
+	if ( isset($widget_opt[$widget_num]['classes']) && !empty($widget_opt[$widget_num]['classes']) )
+	$params[0]['before_widget'] = preg_replace( '/class="/', "class=\"{$widget_opt[$widget_num]['classes']} ", $params[0]['before_widget'], 1 );
+	
+	return $params;
+}
+add_filter( 'dynamic_sidebar_params', 'wpbootstrap_dynamic_sidebar_params' );
+
+// Enable shortcodes in widgets
+add_filter('widget_text', 'do_shortcode');
+
+// Remove height/width attributes on images so they can be responsive
+add_filter( 'post_thumbnail_html', 'remove_thumbnail_dimensions', 10 );
+add_filter( 'image_send_to_editor', 'remove_thumbnail_dimensions', 10 );
+
+function remove_thumbnail_dimensions( $html ) {
+    $html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
+    return $html;
+}
+
+// Add "thumbnail" class
+add_filter('wp_get_attachment_link','add_class_attachment_link',10,1);
+
+function add_class_attachment_link($html){
+    $postid = get_the_ID();
+    $html = str_replace('<a','<a class="thumbnail"',$html);
+	$html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
+    return $html;
+}
+
 ?>
