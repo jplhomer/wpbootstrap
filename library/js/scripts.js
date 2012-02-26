@@ -44,17 +44,29 @@ $(document).ready(function() {
 	$("[rel='tooltip']").tooltip();
 	
 	$(".widget_categories > ul > ul, .widget_archive > ul > ul").addClass('nav nav-list');
-	
-	$("body").fitVids();
-	
-	(function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
- 
-}); /* end of as page load scripts */
+		
+	var $win = $(window)
+	  , $nav = $('.subnav')
+	  , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+	  , isFixed = 0
 
+	// fix sub nav on scroll
+	processScroll()	
+	$win.on('scroll', processScroll)
+	
+	function processScroll() { // sets up the ScrollSpy stuff
+	
+		var i, scrollTop = $win.scrollTop()
+		if (scrollTop >= navTop && !isFixed) {
+			isFixed = 1
+			$nav.addClass('subnav-fixed')
+		} else if (scrollTop <= navTop && isFixed) {
+			isFixed = 0
+			$nav.removeClass('subnav-fixed')
+		}
+	}
+		 
+}); /* end of as page load scripts */
 
 // HTML5 Fallbacks for older browsers
 $(function() {

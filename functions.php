@@ -14,11 +14,11 @@ sidebars, comments, ect.
 require_once('library/bones.php');            // core functions (don't remove)
 require_once('library/plugins.php');          // plugins & extra functions (optional)
 
-// Get shortcodes, baby!
-require_once('library/shortcodes.php');			// custom shortcodes
-
 // Get WP Bootstrap specific utilities
 require_once('library/wpbootstrap-utils.php');
+
+// Get shortcodes, baby!
+require_once('library/shortcodes.php');			// custom shortcodes
 
 // Options panel
 require_once('library/options-panel.php');

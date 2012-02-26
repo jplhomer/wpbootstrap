@@ -258,6 +258,14 @@ add_filter( 'dynamic_sidebar_params', 'wpbootstrap_dynamic_sidebar_params' );
 // Enable shortcodes in widgets
 add_filter('widget_text', 'do_shortcode');
 
+/************* BOOTSTRAP IMAGE SETUP *****************/
+
+/** 
+ * Functions to make images responsive
+ * They need to resize with the browser window and not have explicit dimensions
+ * Since WP Bootstrap 1.2
+ */
+
 // Remove height/width attributes on images so they can be responsive
 add_filter( 'post_thumbnail_html', 'remove_thumbnail_dimensions', 10 );
 add_filter( 'image_send_to_editor', 'remove_thumbnail_dimensions', 10 );
@@ -276,5 +284,136 @@ function add_class_attachment_link($html){
 	$html = preg_replace( '/(width|height)=\"\d*\"\s/', "", $html );
     return $html;
 }
+
+/************* BOOTSTRAP COMPONENTS SETUP *****************/
+
+/** 
+ * We want to filter through the_content() and add the necessary code for things like scrollspy, accordions, and navable tabs.
+ * Since WP Bootstrap 1.2
+ */
+
+function slugify ($str) { // turn name into slug for ID
+	$slug = str_replace(' ','-',strtolower($str));
+	return $slug;	
+}
+
+function wpbootstrap_feature($type) { // check if feature is activated for post
+	global $post;
+	
+	$custom = get_post_custom($post->ID);
+	
+	if ($custom[$type][0] == 1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function add_bootstrap_features($content) { // can turn the_content()'s H2 tags into Scrollspy, nav-tabs, nav-pills, or accordion!
+	$navbar = '';
+
+	$pattern = "/<h2 ?.*>(.*)<\/h2>/"; // grab all H2 elements
+	preg_match_all($pattern, $content, $headings);
+	// $headings[0] returns each element w/tag
+	// $headings[1] returns the innerHTML of tag	
+
+	// only add features if they're activated (within custom post meta)
+	if ( wpbootstrap_feature('scrollspy') ) { // active ScrollSpy for the document
+		if ($headings[1][0] != '') { // if there's somethin here
+			// build navbar
+			$navbar = '<div class="subnav" id="scrollspy-nav">';
+			$navbar .= '<ul class="nav nav-pills">';
+			foreach ($headings[1] as $item) {
+				$navbar .= '<li><a href="#' . slugify($item) . '">' . $item . '</a></li>';
+				
+				// edit the H2 Tags themselves
+				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+				$replace = '<h2 id="' . slugify($item) . '">' . $item . '</h2>';
+				$content = preg_replace( $search, $replace, $content );
+			}
+			$navbar .= '</ul>';
+			$navbar .= '</div>';
+	
+			echo $navbar;
+		}	
+	} else if ( wpbootstrap_feature('nav-tabs') ) { // Add Tabs for each H2 repesented
+		if ($headings[1][0] != '') { // if there's somethin here
+			$x = 0; //counter
+			// build navbar
+			$navbar .= '<ul class="nav nav-tabs">';
+			foreach ($headings[1] as $item) {
+				if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
+				$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
+				$x++;
+			}
+			$navbar .= '</ul><div class="tab-content">';
+			
+			$x = 0;
+			foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
+				// edit the H2 Tags themselves
+				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+				if ($x == 0) {
+					$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
+				} else {
+					$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
+				}
+				$content = preg_replace( $search, $replace, $content );
+				$x++;
+			}
+			
+			$content .= $content . '</div></div>'; // gotta close off the last tab & container.
+		}
+	} else if ( wpbootstrap_feature('nav-pills') ) { // Add Pills for each H2 repesented
+		if ($headings[1][0] != '') { // if there's somethin here
+			$x = 0; //counter
+			// build navbar
+			$navbar .= '<ul class="nav nav-pills">';
+			foreach ($headings[1] as $item) {
+				if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
+				$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
+				$x++;
+			}
+			$navbar .= '</ul><div class="tab-content">';
+			
+			$x = 0;
+			foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
+				// edit the H2 Tags themselves
+				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+				if ($x == 0) {
+					$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
+				} else {
+					$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
+				}
+				$content = preg_replace( $search, $replace, $content );
+				$x++;
+			}
+			
+			$content .= $content . '</div></div>'; // gotta close off the last tab & container.
+		}
+	} else if ( wpbootstrap_feature('accordion') ) { // Add Pills for each H2 repesented
+		if ($headings[1][0] != '') { // if there's somethin here
+			$x = 0; //counter
+			// build accordion
+			$accordion = '<div class="accordion" id="page-accordion">';
+			foreach ($headings[1] as $item) {
+				if ($x == 0) { 
+					$replace = $accordion. '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse in"><div class="accordion-inner">';
+				} else { 
+					$replace = '</div></div></div>'; // end preceding group 
+					$replace .= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse"><div class="accordion-inner">';
+				}
+				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+				$content = preg_replace( $search, $replace, $content );
+				$x++;
+			}
+			$content .= '</div></div></div></div>'; // end last accordion-body, accordion-group, and accordion			
+		}
+	}
+
+	echo $content;
+}
+
+// priority is low so shortcodes and stuff still fire
+add_filter('the_content', 'add_bootstrap_features', 12); 
 
 ?>

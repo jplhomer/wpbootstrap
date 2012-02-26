@@ -42,7 +42,7 @@
 		
 	</head>
 	
-	<body <?php body_class(); ?>>
+	<body <?php body_class(); ?> data-spy="scroll" data-target=".subnav">
 
 		<header role="banner">
 		

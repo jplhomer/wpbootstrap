@@ -7,19 +7,19 @@
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
 					<article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article" itemscope itemtype="http://schema.org/BlogPosting">
+						
+						<header class="page-header">
+							
+							<h1 class="page-title" itemprop="headline"><?php the_title(); ?></h1>
+							
+						</header> <!-- end article header -->
 					
-					<header class="page-header">
-						
-						<h1 class="page-title" itemprop="headline"><?php the_title(); ?></h1>
-						
-					</header> <!-- end article header -->
-				
-					<section class="post_content clearfix" itemprop="articleBody">
-						<?php the_content(); ?>
-				
-					</section> <!-- end article section -->
-				
-				</article> <!-- end article -->
+						<section class="post_content clearfix" itemprop="articleBody">
+							<?php the_content(); ?>
+					
+						</section> <!-- end article section -->
+					
+					</article> <!-- end article -->
 					
 					<?php endwhile; ?>		
 					
