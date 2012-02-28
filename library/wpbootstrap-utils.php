@@ -309,108 +309,139 @@ function wpbootstrap_feature($type) { // check if feature is activated for post
 	}
 }
 
-function add_bootstrap_features($content) { // can turn the_content()'s H2 tags into Scrollspy, nav-tabs, nav-pills, or accordion!
-	$navbar = '';
-
+function wpbootstrap_scrollspy($content) { // turn content into Bootstrap's ScrollSpy feature
+	// STILL NEEDS TO WORK OUT OFFSET KINKS.
 	$pattern = "/<h2 ?.*>(.*)<\/h2>/"; // grab all H2 elements
 	preg_match_all($pattern, $content, $headings);
 	// $headings[0] returns each element w/tag
 	// $headings[1] returns the innerHTML of tag	
 
-	// only add features if they're activated (within custom post meta)
-	if ( wpbootstrap_feature('scrollspy') ) { // active ScrollSpy for the document
-		if ($headings[1][0] != '') { // if there's somethin here
-			// build navbar
-			$navbar = '<div class="subnav" id="scrollspy-nav">';
-			$navbar .= '<ul class="nav nav-pills">';
-			foreach ($headings[1] as $item) {
-				$navbar .= '<li><a href="#' . slugify($item) . '">' . $item . '</a></li>';
-				
-				// edit the H2 Tags themselves
-				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
-				$replace = '<h2 id="' . slugify($item) . '">' . $item . '</h2>';
-				$content = preg_replace( $search, $replace, $content );
-			}
-			$navbar .= '</ul>';
-			$navbar .= '</div>';
-	
-			echo $navbar;
-		}	
-	} else if ( wpbootstrap_feature('nav-tabs') ) { // Add Tabs for each H2 repesented
-		if ($headings[1][0] != '') { // if there's somethin here
-			$x = 0; //counter
-			// build navbar
-			$navbar .= '<ul class="nav nav-tabs">';
-			foreach ($headings[1] as $item) {
-				if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
-				$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
-				$x++;
-			}
-			$navbar .= '</ul><div class="tab-content">';
+	if ($headings[1][0] != '') { // if there's somethin here
+		// build navbar
+		$navbar = '<div class="subnav" id="scrollspy-nav">';
+		$navbar .= '<ul class="nav nav-pills">';
+		foreach ($headings[1] as $item) {
+			$navbar .= '<li><a href="#' . slugify($item) . '">' . $item . '</a></li>';
 			
-			$x = 0;
-			foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
-				// edit the H2 Tags themselves
-				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
-				if ($x == 0) {
-					$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
-				} else {
-					$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
-				}
-				$content = preg_replace( $search, $replace, $content );
-				$x++;
-			}
-			
-			$content .= $content . '</div></div>'; // gotta close off the last tab & container.
+			// edit the H2 Tags themselves
+			$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+			$replace = '<h2 id="' . slugify($item) . '">' . $item . '</h2>';
+			$content = preg_replace( $search, $replace, $content );
 		}
-	} else if ( wpbootstrap_feature('nav-pills') ) { // Add Pills for each H2 repesented
-		if ($headings[1][0] != '') { // if there's somethin here
-			$x = 0; //counter
-			// build navbar
-			$navbar .= '<ul class="nav nav-pills">';
-			foreach ($headings[1] as $item) {
-				if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
-				$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
-				$x++;
-			}
-			$navbar .= '</ul><div class="tab-content">';
-			
-			$x = 0;
-			foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
-				// edit the H2 Tags themselves
-				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
-				if ($x == 0) {
-					$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
-				} else {
-					$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
-				}
-				$content = preg_replace( $search, $replace, $content );
-				$x++;
-			}
-			
-			$content .= $content . '</div></div>'; // gotta close off the last tab & container.
-		}
-	} else if ( wpbootstrap_feature('accordion') ) { // Add Pills for each H2 repesented
-		if ($headings[1][0] != '') { // if there's somethin here
-			$x = 0; //counter
-			// build accordion
-			$accordion = '<div class="accordion" id="page-accordion">';
-			foreach ($headings[1] as $item) {
-				if ($x == 0) { 
-					$replace = $accordion. '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse in"><div class="accordion-inner">';
-				} else { 
-					$replace = '</div></div></div>'; // end preceding group 
-					$replace .= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse"><div class="accordion-inner">';
-				}
-				$search = "/<h2 ?.*>" . $item . "<\/h2>/";
-				$content = preg_replace( $search, $replace, $content );
-				$x++;
-			}
-			$content .= '</div></div></div></div>'; // end last accordion-body, accordion-group, and accordion			
-		}
-	}
+		$navbar .= '</ul>';
+		$navbar .= '</div>';
 
+		echo $navbar;
+	}
 	echo $content;
+}
+
+function wpbootstrap_navtabs($content) { // turn content into Bootstrap's Nav Pills feature
+	$pattern = "/<h2 ?.*>(.*)<\/h2>/"; // grab all H2 elements
+	preg_match_all($pattern, $content, $headings);
+	// $headings[0] returns each element w/tag
+	// $headings[1] returns the innerHTML of tag	
+
+	if ($headings[1][0] != '') { // if there's somethin here
+		$x = 0; //counter
+		// build navbar
+		$navbar .= '<ul class="nav nav-tabs">';
+		foreach ($headings[1] as $item) {
+			if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
+			$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
+			$x++;
+		}
+		$navbar .= '</ul><div class="tab-content">';
+		
+		$x = 0;
+		foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
+			// edit the H2 Tags themselves
+			$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+			if ($x == 0) {
+				$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
+			} else {
+				$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
+			}
+			$content = preg_replace( $search, $replace, $content );
+			$x++;
+		}
+		$content .= $content . '</div></div>'; // gotta close off the last tab & container.
+	}
+	echo $content;
+}
+
+function wpbootstrap_navpills($content) { // turn content into Bootstrap's Nav Tabs feature
+	$pattern = "/<h2 ?.*>(.*)<\/h2>/"; // grab all H2 elements
+	preg_match_all($pattern, $content, $headings);
+	// $headings[0] returns each element w/tag
+	// $headings[1] returns the innerHTML of tag	
+
+	if ($headings[1][0] != '') { // if there's somethin here
+		$x = 0; //counter
+		// build navbar
+		$navbar .= '<ul class="nav nav-pills">';
+		foreach ($headings[1] as $item) {
+			if ($x == 0) { $active = ' class="active"'; } else { $active = ''; }
+			$navbar .= '<li' . $active . '><a data-toggle="tab" href="#' . slugify($item) . '">' . $item . '</a></li>';
+			$x++;
+		}
+		$navbar .= '</ul><div class="tab-content">';
+		
+		$x = 0;
+		foreach ($headings[1] as $item) { // print $navbar right before first panel, so we can have pre-material if wanted.
+			// edit the H2 Tags themselves
+			$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+			if ($x == 0) {
+				$replace = $navbar . '<div id="' . slugify($item) . '" class="tab-pane fade active in"><h2>' . $item . '</h2>';
+			} else {
+				$replace = '</div><div id="' . slugify($item) . '" class="tab-pane fade"><h2>' . $item . '</h2>';
+			}
+			$content = preg_replace( $search, $replace, $content );
+			$x++;
+		}
+		
+		$content .= $content . '</div></div>'; // gotta close off the last tab & container.
+	}
+	echo $content;	
+}
+
+function wpbootstrap_accordion($content) { // turn content into Bootstrap's Accordion (collapse plugin)
+	$pattern = "/<h2 ?.*>(.*)<\/h2>/"; // grab all H2 elements
+	preg_match_all($pattern, $content, $headings);
+	// $headings[0] returns each element w/tag
+	// $headings[1] returns the innerHTML of tag	
+
+	if ($headings[1][0] != '') { // if there's somethin here
+		$x = 0; //counter
+		// build accordion
+		$accordion = '<div class="accordion" id="page-accordion">';
+		foreach ($headings[1] as $item) {
+			if ($x == 0) { 
+				$replace = $accordion. '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse in"><div class="accordion-inner">';
+			} else { 
+				$replace = '</div></div></div>'; // end preceding group 
+				$replace .= '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#page-accordion" href="#' . slugify($item) . '">' . $item . '</a></div><div id="' . slugify($item) . '" class="accordion-body collapse"><div class="accordion-inner">';
+			}
+			$search = "/<h2 ?.*>" . $item . "<\/h2>/";
+			$content = preg_replace( $search, $replace, $content );
+			$x++;
+		}
+		$content .= '</div></div></div></div>'; // end last accordion-body, accordion-group, and accordion			
+	}
+	echo $content;	
+}
+
+function add_bootstrap_features($content) { // can turn the_content()'s H2 tags into Scrollspy, nav-tabs, nav-pills, or accordion!
+	// only add features if they're activated (within custom post meta)
+	if ( wpbootstrap_feature('scrollspy') ) {
+		wpbootstrap_scrollspy($content); // active ScrollSpy for the document
+	} else if ( wpbootstrap_feature('nav-tabs') ) { // Add Tabs for each H2 repesented
+		wpbootstrap_navtabs($content); // Nav Tabs for the document
+	} else if ( wpbootstrap_feature('nav-pills') ) { // Add Pills for each H2 repesented
+		wpbootstrap_navpills($content); // Nav Pills for the document
+	} else if ( wpbootstrap_feature('accordion') ) { // Create accordion using each H2 repesented
+		wpbootstrap_accordion($content); // You get the picture
+	}
 }
 
 // priority is low so shortcodes and stuff still fire
