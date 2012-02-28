@@ -300,9 +300,9 @@ function slugify ($str) { // turn name into slug for ID
 function wpbootstrap_feature($type) { // check if feature is activated for post
 	global $post;
 	
-	$custom = get_post_custom($post->ID);
+	$custom = get_post_meta($post->ID, 'wpbootstrap_component' );
 	
-	if ($custom[$type][0] == 1) {
+	if ($custom[0] == $type) {
 		return true;
 	} else {
 		return false;
@@ -445,6 +445,73 @@ function add_bootstrap_features($content) { // can turn the_content()'s H2 tags 
 }
 
 // priority is low so shortcodes and stuff still fire
-add_filter('the_content', 'add_bootstrap_features', 12); 
+add_filter('the_content', 'add_bootstrap_features', 12);
 
-?>
+/* ADD META FOR BOOTSTRAP COMPONENTS OPTIONS */
+
+/* Fire meta box setup function on the post editor screen */
+add_action( 'load-post.php', 'wpbootstrap_post_meta_boxes_setup' );
+add_action( 'load-post-new.php', 'wpbootstrap_post_meta_boxes_setup' );
+
+/* Meta box setup function */
+function wpbootstrap_post_meta_boxes_setup() {
+	
+	/* Add meta boxes on the 'add_meta_boxes' hook. */
+	add_action( 'add_meta_boxes', 'wpbootstrap_add_post_meta_boxes' );
+
+	/* Save the wpbootstrap_components meta on 'save_post' hook. */
+	add_action( 'save_post', 'wpbootstrap_components_save_meta', 10, 2 );
+}
+
+function wpbootstrap_add_post_meta_boxes() {
+	add_meta_box(
+		'wpbootstrap-component',
+		esc_html__( 'Bootstrap Components', 'wpbootstrap' ),
+		'wpbootstrap_components_meta_box',
+		'page',
+		'side',
+		'default'
+	);	
+}
+
+/* show the damn box, already */
+function wpbootstrap_components_meta_box( $object, $box ) { ?>
+	<?php wp_nonce_field( basename( __FILE__ ), 'wpbootstrap_components_nonce' ); ?>
+	
+	<p>
+		<?php _e( "Choose a Twitter Bootstrap feature to use on the page. It will parse each H2 tag in your document.", 'wpbootstrap' ); ?>
+	</p>
+	
+	<?php $custom = get_post_custom( $object->ID );
+	$component = $custom['wpbootstrap_component'][0]; 
+	$selected = ' selected="selected"'; ?>
+	
+	<select name="wpbootstrap_component">
+		<option value=""></option>
+		<option value="scrollspy"<?php if ($component == "scrollspy" ) { echo $selected; } ?>>Scrollspy</option>
+		<option value="nav-tabs"<?php if ($component == "nav-tabs" ) { echo $selected; } ?>>Nav-Tabs</option>
+		<option value="nav-pills"<?php if ($component == "nav-pills" ) { echo $selected; } ?>>Nav-Pills</option>
+		<option value="accordion"<?php if ($component == "accordion" ) { echo $selected; } ?>>Accordion</option>
+	</select>
+	<?php
+}
+
+/* Save the dern option */
+function wpbootstrap_components_save_meta( $post_id, $post ) {
+	/* vurrrify dis shiz */
+	if ( !isset( $_POST['wpbootstrap_components_nonce'] ) || !wp_verify_nonce( $_POST['wpbootstrap_components_nonce'], basename( __FILE__ ) ) )
+		return $post_id;
+		
+	// get post type
+	$post_type = get_post_type_object( $post->post_type );
+	
+	// I can haz permission to editz?
+	if ( !current_user_can( $post_type->cap->edit_post, $post_id ) )
+		return $post_id;
+	
+	// Get le posted value
+	$component = $_POST['wpbootstrap_component'];
+	
+	// update her
+	update_post_meta( $post_id, 'wpbootstrap_component', $component );			
+}
