@@ -10,7 +10,7 @@
 		
 		<title><?php wp_title(''); ?></title>
 		
-		<!-- meta tags should be handled by SEO plugin. I reccomend (http://yoast.com/wordpress/seo/) -->
+		<!-- meta tags should be handled by SEO plugin. I recommend (http://yoast.com/wordpress/seo/) -->
 		
 		<!-- mobile optimized -->
 		<meta name="viewport" content="width=device-width">
