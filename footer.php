@@ -26,7 +26,7 @@
 		
 				<p class="attribution row">
 					<span class="pull-right">Developed by <a href="http://jplhomer.org/">Joshua P. Larson</a> using the <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Twitter Bootstrap framework</a>.</span>
-					&copy; <?php bloginfo('name'); ?> <?php _e("is powered by", "bonestheme"); ?> <a href="http://wordpress.org/" title="WordPress">WordPress</a> <span class="amp">&</span> <a href="http://www.themble.com/bones" title="Bones" class="footer_bones_link">Bones</a>.
+					&copy; <?php bloginfo('name'); ?> <?php _e("is powered by", "wpbootstrap"); ?> <a href="http://wordpress.org/" title="WordPress">WordPress</a> <span class="amp">&</span> <a href="http://www.themble.com/bones" title="Bones" class="footer_bones_link">Bones</a>.
 				</p>
 			
 			</div> <!-- end #inner-footer -->

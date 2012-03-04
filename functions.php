@@ -17,9 +17,6 @@ require_once('library/plugins.php');          // plugins & extra functions (opti
 // Get WP Bootstrap specific utilities
 require_once('library/wpbootstrap-utils.php');
 
-// Get shortcodes, baby!
-require_once('library/shortcodes.php');			// custom shortcodes
-
 // Options panel
 require_once('library/options-panel.php');
 
@@ -46,16 +43,6 @@ function bones_register_sidebars() {
     	'before_title' => '<li class="nav-header">',
     	'after_title' => '</li>',
     ));
-	
-	register_sidebar( array(
-		'name' => __( 'Hero Features', 'wpbootstrap' ),
-		'id' => 'hero-features',
-		'description' => __( 'The main features shown on the optional Hero Template. Width: 1170px', 'wpbootstrap' ),
-		'before_widget' => '<div class="item">',
-		'after_widget' => '</div>',
-		'before_title' => '<h1>',
-		'after_title' => '</h1>',
-	) );
 
 	register_sidebar( array(
 		'name' => __( 'Hero Featurettes', 'wpbootstrap' ),
