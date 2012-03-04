@@ -309,7 +309,8 @@ function of_recognized_font_faces() {
 		'times'     => 'Times New Roman',
 		'tahoma'    => 'Tahoma, Geneva',
 		'palatino'  => 'Palatino',
-		'helvetica' => 'Helvetica*'
+		'helvetica' => 'Helvetica',
+		'"Helvetica Neue",Helvetica,Arial,sans-serif' => 'Helvetica Neue'
 		);
 	return apply_filters( 'of_recognized_font_faces', $default );
 }

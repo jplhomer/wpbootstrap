@@ -24,7 +24,30 @@ function optionsframework_option_name() {
  */
 
 function optionsframework_options() {
+
+	// Background Defaults	
+	$background_defaults = array('color' => '', 'image' => '', 'repeat' => 'no-repeat','position' => 'top right','attachment'=>'scroll');
 	
+	// P.Lead Defaults
+	$lead_defaults = array("post" => "1"); // set posts to do so by default
+	
+	// P.Lead Options
+	$lead_options = array();
+
+	// get all post types to choose between for our P.Lead feature
+	$post_types = array();
+	$post_types = get_post_types();
+
+	foreach ($post_types as $type) {
+		if ($type != 'attachment'
+			&& $type != 'revision'
+			&& $type != 'nav_menu_item'
+			&& $type != 'optionsframework') { // exclude these silly guys from our list
+				$lead_options[$type] = $type;
+			}
+	}
+
+/* EXAMPLES	
 	// Test data
 	$test_array = array("one" => "One","two" => "Two","three" => "Three","four" => "Four","five" => "Five");
 	
@@ -33,11 +56,7 @@ function optionsframework_options() {
 	
 	// Multicheck Defaults
 	$multicheck_defaults = array("one" => "1","five" => "1");
-	
-	// Background Defaults
-	
-	$background_defaults = array('color' => '', 'image' => '', 'repeat' => 'repeat','position' => 'top center','attachment'=>'scroll');
-	
+
 	
 	// Pull all the categories into an array
 	$options_categories = array();  
@@ -55,10 +74,84 @@ function optionsframework_options() {
 	}
 		
 	// If using image radio buttons, define a directory path
-	$imagepath =  get_bloginfo('stylesheet_directory') . '/images/';
+	$imagepath =  get_bloginfo('stylesheet_directory') . '/library/images/';
+*/
 		
 	$options = array();
-		
+	
+	/* Here's what we want, you guys...
+	
+	- Menu Bar fixed (boolean)
+	- Menu Bar background color (solid)
+	- Hero Heading
+	- Hero Description
+	- Hero Background (image or color)
+	- Hero text color
+	- Typography
+	- Use "lead" class for first P?
+	*/
+											
+	$options[] = array( "name" => "Basic Settings",
+						"type" => "heading");
+
+	$options[] = array( "name" => "Fixed Nav Bar",
+						"desc" => "Fix the main nav bar to the top of the screen.",
+						"id" => "fixed_navbar",
+						"std" => "1",
+						"type" => "checkbox");
+						
+	$options[] = array( "name" => "Nav Bar Background",
+						"desc" => "Defaults to the dark gradient used by Twitter Bootstrap.",
+						"id" => "navbar_bg",
+						"std" => "",
+						"type" => "color");
+					
+	$options[] = array( "name" => "Hero Heading",
+						"desc" => "Customize the heading on your Hero Landing Page.",
+						"id" => "hero_heading",
+						"std" => "Welcome!",
+						"type" => "text");
+							
+	$options[] = array( "name" => "Hero Description",
+						"desc" => "The description below your Hero Heading on your Hero Landing Page.",
+						"id" => "hero_description",
+						"std" => "I'm glad you've stopped by my site. Take a look around!<br />
+<a class=\"btn btn-primary btn-large\" href=\"#\">Let's Go! &raquo;</a>",
+						"type" => "textarea"); 
+						
+	$options[] = array( "name" =>  "Hero Background",
+						"desc" => "Change the background CSS & image.",
+						"id" => "hero_bg",
+						"std" => $background_defaults, 
+						"type" => "background");
+						
+	$options[] = array( "name" => "Hero Text Color",
+						"desc" => "Defaults to the standard heading color used by Twitter Bootstrap.",
+						"id" => "hero_text_color",
+						"std" => "",
+						"type" => "color");
+														
+	$options[] = array( "name" => "Typography",
+						"desc" => "Defaults to Twitter Bootstrap default.",
+						"id" => "typography",
+						"std" => array('size' => '13px','face' => '"Helvetica Neue",Helvetica,Arial,sans-serif','style' => 'normal','color' => '#333'),
+						"type" => "typography");
+											
+	$options[] = array( "name" => "Emphasize First Paragraph",
+						"desc" => "Add the class 'lead' to the first paragraph in the selected post types.",
+						"id" => "use_lead",
+						"std" => "0",
+						"type" => "checkbox");
+
+	$options[] = array( "name" => "Post Types to use p.lead",
+						"desc" => "Choose which post types should emphasize the first paragraph.",
+						"id" => "lead_options",
+						"class" => "hidden",
+						"std" => $lead_defaults, // These items get checked by default
+						"type" => "multicheck",
+						"options" => $lead_options);
+
+/* EXAMPLES	
 	$options[] = array( "name" => "Basic Settings",
 						"type" => "heading");
 							
@@ -179,6 +272,7 @@ function optionsframework_options() {
 						"desc" => "Example typography.",
 						"id" => "example_typography",
 						"std" => array('size' => '12px','face' => 'verdana','style' => 'bold italic','color' => '#123456'),
-						"type" => "typography");			
+						"type" => "typography");		
+*/	
 	return $options;
 }

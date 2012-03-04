@@ -92,7 +92,7 @@ if ( ! function_exists( 'wpbootstrap_posted_on' ) ) :
 function wpbootstrap_posted_on() {
 	printf( __( '<p class="meta muted"><i class="icon-time"></i> <time datetime="%1$s" pubdate>%2$s</time> by <a href="%3$s">%4$s</a>.</p>' ),
 		esc_attr( get_the_date( 'c' ) ),
-		esc_attr( get_the_time() ),
+		esc_attr( get_the_date() . ' at ' . get_the_time() ),
 		esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
 		get_the_author()
 	);
@@ -160,7 +160,6 @@ class Add_Submenu_Class extends Walker_Nav_Menu {
   }
 }
 
-
 /************* HOMEPAGE WIDGET SETUP *****************/
 
 /** 
@@ -219,41 +218,6 @@ function widget_first_last_classes($params) {
 
 }
 add_filter('dynamic_sidebar_params','widget_first_last_classes');
-
-/**
- * Add predetermined classes to widgets for the choosing
- * Source: http://ednailor.com/2011/01/24/adding-custom-css-classes-to-sidebar-widgets/
- */
-
-function wpbootstrap_widget_form_extend( $instance, $widget ) {
-	/* Allows User to Add Custom CSS Classes */
-	$row .= "\t<p><em>Use 'hero-unit' for the standard hero slide.</em></p><input type='text'   name='widget-{$widget->id_base}[{$widget->number}][classes]'   id='widget-{$widget->id_base}-{$widget->number}-classes'   class='widefat' value='{$instance['classes']}'/>\n";
-	$row .= "</p>\n";
-	
-	echo $row;
-	return $instance;
-}
-add_filter('widget_form_callback', 'wpbootstrap_widget_form_extend', 10, 2);
-
-function wpbootstrap_widget_update( $instance, $new_instance ) {
-	$instance['classes'] = $new_instance['classes'];
-	return $instance;
-}
-add_filter( 'widget_update_callback', 'wpbootstrap_widget_update', 10, 2 );
-
-function wpbootstrap_dynamic_sidebar_params( $params ) {
-	global $wp_registered_widgets;
-	$widget_id    = $params[0]['widget_id'];
-	$widget_obj    = $wp_registered_widgets[$widget_id];
-	$widget_opt    = get_option($widget_obj['callback'][0]->option_name);
-	$widget_num    = $widget_obj['params'][0]['number'];
-	
-	if ( isset($widget_opt[$widget_num]['classes']) && !empty($widget_opt[$widget_num]['classes']) )
-	$params[0]['before_widget'] = preg_replace( '/class="/', "class=\"{$widget_opt[$widget_num]['classes']} ", $params[0]['before_widget'], 1 );
-	
-	return $params;
-}
-add_filter( 'dynamic_sidebar_params', 'wpbootstrap_dynamic_sidebar_params' );
 
 // Enable shortcodes in widgets
 add_filter('widget_text', 'do_shortcode');
@@ -432,6 +396,8 @@ function wpbootstrap_accordion($content) { // turn content into Bootstrap's Acco
 }
 
 function add_bootstrap_features($content) { // can turn the_content()'s H2 tags into Scrollspy, nav-tabs, nav-pills, or accordion!
+	$content = wpbootstrap_plead($content); // we want to emphasize the first paragraph... maybe
+	
 	// only add features if they're activated (within custom post meta)
 	if ( wpbootstrap_feature('scrollspy') ) {
 		wpbootstrap_scrollspy($content); // active ScrollSpy for the document
@@ -441,6 +407,8 @@ function add_bootstrap_features($content) { // can turn the_content()'s H2 tags 
 		wpbootstrap_navpills($content); // Nav Pills for the document
 	} else if ( wpbootstrap_feature('accordion') ) { // Create accordion using each H2 repesented
 		wpbootstrap_accordion($content); // You get the picture
+	} else {
+		return $content;
 	}
 }
 
@@ -514,4 +482,71 @@ function wpbootstrap_components_save_meta( $post_id, $post ) {
 	
 	// update her
 	update_post_meta( $post_id, 'wpbootstrap_component', $component );			
+}
+
+
+/************* BOOTSTRAP OPTIONS FUNCTIONS *****************/
+
+/** 
+ * Use these actions to display our options values (and use them)
+ * Since WP Bootstrap 1.2
+ */
+
+if (! function_exists('wpbootstrap_options_styles') ) {
+
+	function wpbootstrap_options_styles() { // prints styles based on Theme Options. Call this in header.php
+		?><style type="text/css"><?php
+
+		if ( of_get_option('navbar_bg') != '' ) { // if they set a navbar_bg option ?>
+			.navbar-inner { background: <?php echo of_get_option('navbar_bg'); ?> }
+		<?php }
+		
+		$hero_bg = of_get_option('hero_bg'); // get the Hero bg image/color
+		if ($hero_bg) {
+			if ($hero_bg['image']) { ?>
+			.hero-unit { background: <?php echo $hero_bg['color']; ?> url('<?php echo $hero_bg['image']; ?>') <?php echo $hero_bg['position'] . ' ' . $hero_bg['repeat']; ?>; }
+			<?php } else { ?>
+			.hero-unit { background: <?php echo $hero_bg['color']; ?>; }
+			<?php }	
+		}
+		
+		if ( of_get_option('hero_text_color') ) { // get the Hero text color ?>
+			.hero-unit > h1, .hero-unit > p { color: <?php echo of_get_option('hero_text_color'); ?>; }
+		<?php }
+		
+		$typography = of_get_option('typography');
+		if ( $typography ) { // get typography options ?>
+			body { 
+				font-family: <?php echo $typography['face']; ?>;
+				font-size: <?php echo $typography['size']; ?>;
+				font-style: <?php echo $typography['style']; ?>; 
+			}
+			p { color: <?php echo $typography['color']; ?>; }
+		<?php }
+		
+		if ( of_get_option('fixed_navbar') == '1' ) { // add some padding if we're fixed at the top ?>
+			body {
+				padding-top: 60px;
+			} <?php
+		}
+		?></style><?php
+	}
+}
+
+if (! function_exists('wpbootstrap_plead') ) {	
+
+	function wpbootstrap_plead($content) { // we want to emphasize the first paragraph... maybe
+		if ( of_get_option('use_lead') == '1' ) { // if it's set in the theme options
+			global $post;
+			$lead_types = of_get_option('lead_options');
+			foreach ($lead_types as $type => $value) {
+				if (get_post_type( $post->ID ) == $type && $value == 1 && ( is_single( $post->ID ) || is_page( $post->ID ) )) {
+					$content = preg_replace('/<p([^>]+)?>/', '<p$1 class="lead">', $content, 1); // add 'lead' class to first p in single post type
+				}
+			}
+			return $content;
+		} else {
+			return $content;
+		}
+	}
 }

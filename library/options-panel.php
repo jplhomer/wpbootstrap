@@ -32,14 +32,14 @@ function optionsframework_custom_scripts() { ?>
 <script type="text/javascript">
 jQuery(document).ready(function() {
 
-	jQuery('#showhidden_gradient').click(function() {
-  		jQuery('#section-top_nav_bottom_gradient_color').fadeToggle(400);
+	jQuery('#use_lead').click(function() {
+  		jQuery('#section-lead_options').fadeToggle(400);
 	});
 	
-	if (jQuery('#showhidden_gradient:checked').val() !== undefined) {
-		jQuery('#section-top_nav_bottom_gradient_color').show();
+	if (jQuery('#use_lead:checked').val() !== undefined) {
+		jQuery('#section-lead_options').show();
 	}
-	
+		
 });
 </script>
 

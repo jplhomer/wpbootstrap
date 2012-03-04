@@ -24,6 +24,9 @@
 		<!-- get normal styles + bootstrap -->
 		<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/style.css">
 		
+		<!-- get theme options styles -->
+		<?php wpbootstrap_options_styles(); ?>
+		
 		<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
   		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="<?php echo get_template_directory_uri(); ?>/library/js/libs/jquery-1.7.1.min.js"><\/script>')</script>
@@ -46,7 +49,7 @@
 
 		<header role="banner">
 		
-			<div class="navbar navbar-fixed-top">
+			<div class="navbar<?php if ( of_get_option('fixed_navbar') == '1' ) { ?> navbar-fixed-top<?php } ?>">
 				<div class="navbar-inner">
 					<nav class="container" role="navigation">
 						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
