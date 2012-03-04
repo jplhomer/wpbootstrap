@@ -375,6 +375,9 @@ footer.page-footer .widget-title {
 footer.page-footer .widget ul li {
 	color: #888;
 }
+footer.page-footer .attribution {
+	color: #ccc;
+}
 
 /* Dark Calendar Widget */
 footer.page-footer .widget_calendar #wp-calendar {
