@@ -24,10 +24,12 @@
 					<?php endif; ?>
 				</div><!-- #supplementary -->
 		
-				<p class="attribution row">
-					<span class="pull-right">Developed by <a href="http://jplhomer.org/">Joshua P. Larson</a> using the <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Twitter Bootstrap framework</a>.</span>
-					&copy; <?php bloginfo('name'); ?> <?php _e("is powered by", "wpbootstrap"); ?> <a href="http://wordpress.org/" title="WordPress">WordPress</a> <span class="amp">&</span> <a href="http://www.themble.com/bones" title="Bones" class="footer_bones_link">Bones</a>.
-				</p>
+				<div class="attribution row">
+					<div class="span12">
+						<span class="pull-right">Developed by <a href="http://jplhomer.org/">Joshua P. Larson</a> using the <a href="http://twitter.github.com/bootstrap/index.html" target="_blank">Twitter Bootstrap framework</a>.</span>
+						&copy; <?php bloginfo('name'); ?> <?php _e("is powered by", "wpbootstrap"); ?> <a href="http://wordpress.org/" title="WordPress">WordPress</a> <span class="amp">&amp;</span> <a href="http://www.themble.com/bones" title="Bones" class="footer_bones_link">Bones</a>.
+					</div>
+				</div>
 			
 			</div> <!-- end #inner-footer -->
 			
