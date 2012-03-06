@@ -49,7 +49,7 @@
 
 		<header role="banner">
 		
-			<div class="navbar<?php if ( of_get_option('fixed_navbar') == '1' ) { ?> navbar-fixed-top<?php } ?>">
+			<div class="navbar<?php if ( of_get_option('fixed_navbar', '1') == '1' ) { ?> navbar-fixed-top<?php } ?>">
 				<div class="navbar-inner">
 					<nav class="container" role="navigation">
 						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>

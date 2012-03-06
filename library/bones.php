@@ -170,7 +170,8 @@ function bones_footer_links() {
  
 // this is the fallback for header menu
 function bones_main_nav_fallback() { 
-	wp_page_menu( 'show_home=Home&menu_class=menu' ); 
+	wp_page_menu( 'show_home=Home&menu_class=nav' );
+	echo '<div class="alert alert-danger pull-right" style="width: 500px;">Uh oh! Add a menu and assign it to The Main Menu in your Admin &rarr; Appearance &rarr; Menus screen.</div>';
 }
 
 // this is the fallback for footer menu
