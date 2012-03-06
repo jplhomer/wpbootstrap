@@ -3,8 +3,7 @@
 
 Twitter's bootstrap (http://twitter.github.com/bootstrap) in Wordpress theme form. Using Eddie Machado's Bones for a starting point (https://github.com/eddiemachado/bones) as well as 320Press' original theme (https://github.com/320press/wordpress-bootstrap). 
 
-FEATURES
-________
+## FEATURES
 
 It's a Bootstrap-flavored Wordpress theme. It could be used as-is or as a starting point for theme developers. It’s built on top of the Bones theme framework by Eddie Machado, based on 320Press' original theme, and based on v2.0 of Twitter’s Bootstrap.
 
