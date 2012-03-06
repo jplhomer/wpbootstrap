@@ -2,7 +2,7 @@
 			
 			<div id="content" class="row">
 			
-				<div id="main" class="span8 clearfix" role="main">
+				<div id="main" class="span8" role="main">
 				
 					<h1 class="archive_title"><span>Search Results for:</span> <?php echo esc_attr(get_search_query()); ?></h1>
 				
@@ -39,8 +39,8 @@
 					<?php } else { // if it is disabled, display regular wp prev & next links ?>
 						<nav class="wp-prev-next">
 							<ul class="pager clearfix">
-								<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "bonestheme")) ?></li>
-								<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "bonestheme")) ?></li>
+								<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "wpbootstrap")) ?></li>
+								<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "wpbootstrap")) ?></li>
 							</ul>
 						</nav>
 					<?php } ?>			

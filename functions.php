@@ -33,7 +33,7 @@ add_image_size( 'grid2', 160, 120, true );
 /************* ACTIVE SIDEBARS ********************/
 
 // Sidebars & Widgetizes Areas
-function bones_register_sidebars() {
+function wpbootstrap_register_sidebars() {
     register_sidebar(array(
     	'id' => 'sidebar1',
     	'name' => 'Sidebar 1',
@@ -54,7 +54,7 @@ function bones_register_sidebars() {
 		'after_title' => '</h2>',
 	) );
     
-		register_sidebar( array(
+	register_sidebar( array(
 		'name' => __( 'Footer Area One', 'wpbootstrap' ),
 		'id' => 'sidebar-3',
 		'description' => __( 'An optional widget area for your site footer', 'wpbootstrap' ),
@@ -89,7 +89,7 @@ function bones_register_sidebars() {
 /************* COMMENT LAYOUT *********************/
 		
 // Comment Layout
-function bones_comments($comment, $args, $depth) {
+function wpbootstrap_comments($comment, $args, $depth) {
    $GLOBALS['comment'] = $comment; ?>
 	<li <?php comment_class(); ?>>
 		<article id="comment-<?php comment_ID(); ?>" class="clearfix">
@@ -121,7 +121,7 @@ function bones_comments($comment, $args, $depth) {
 /************* SEARCH FORM LAYOUT *****************/
 
 // Search Form
-function bones_wpsearch($form) {
+function wpbootstrap_wpsearch($form) {
     $form = '<form class="navbar-search pull-right" role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
     <input class="search-query" type="text" value="' . get_search_query() . '" name="s" id="s" placeholder="Search" />
     </form>';

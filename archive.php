@@ -6,27 +6,27 @@
 					
 						<?php if (is_category()) { ?>
 							<h1 class="archive_title h2">
-								<span><?php _e("Posts Categorized:", "bonestheme"); ?></span> <?php single_cat_title(); ?>
+								<span><?php _e("Posts Categorized:", "wpbootstrap"); ?></span> <?php single_cat_title(); ?>
 							</h1>
 						<?php } elseif (is_tag()) { ?> 
 							<h1 class="archive_title h2">
-								<span><?php _e("Posts Tagged:", "bonestheme"); ?></span> <?php single_tag_title(); ?>
+								<span><?php _e("Posts Tagged:", "wpbootstrap"); ?></span> <?php single_tag_title(); ?>
 							</h1>
 						<?php } elseif (is_author()) { ?>
 							<h1 class="archive_title h2">
-								<span><?php _e("Posts By:", "bonestheme"); ?></span> <?php get_the_author_meta('display_name'); ?>
+								<span><?php _e("Posts By:", "wpbootstrap"); ?></span> <?php get_the_author_meta('display_name'); ?>
 							</h1>
 						<?php } elseif (is_day()) { ?>
 							<h1 class="archive_title h2">
-								<span><?php _e("Daily Archives:", "bonestheme"); ?></span> <?php the_time('l, F j, Y'); ?>
+								<span><?php _e("Daily Archives:", "wpbootstrap"); ?></span> <?php the_time('l, F j, Y'); ?>
 							</h1>
 						<?php } elseif (is_month()) { ?>
 						    <h1 class="archive_title h2">
-						    	<span><?php _e("Monthly Archives:", "bonestheme"); ?>:</span> <?php the_time('F Y'); ?>
+						    	<span><?php _e("Monthly Archives:", "wpbootstrap"); ?>:</span> <?php the_time('F Y'); ?>
 						    </h1>
 						<?php } elseif (is_year()) { ?>
 						    <h1 class="archive_title h2">
-						    	<span><?php _e("Yearly Archives:", "bonestheme"); ?>:</span> <?php the_time('Y'); ?>
+						    	<span><?php _e("Yearly Archives:", "wpbootstrap"); ?>:</span> <?php the_time('Y'); ?>
 						    </h1>
 						<?php } ?>
 					
@@ -65,8 +65,8 @@
 						<?php } else { // if it is disabled, display regular wp prev & next links ?>
 							<nav class="wp-prev-next">
 								<ul class="pager clearfix">
-									<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "bonestheme")) ?></li>
-									<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "bonestheme")) ?></li>
+									<li class="previous"><?php next_posts_link(_e('&laquo; Older Entries', "wpbootstrap")) ?></li>
+									<li class="next"><?php previous_posts_link(_e('Newer Entries &raquo;', "wpbootstrap")) ?></li>
 								</ul>
 							</nav>
 						<?php } ?>
@@ -76,10 +76,10 @@
 						
 						<article id="post-not-found">
 						    <header>
-						    	<h1><?php _e("No Posts Yet", "bonestheme"); ?></h1>
+						    	<h1><?php _e("No Posts Yet", "wpbootstrap"); ?></h1>
 						    </header>
 						    <section class="post_content">
-						    	<p><?php _e("Sorry, What you were looking for is not here.", "bonestheme"); ?></p>
+						    	<p><?php _e("Sorry, What you were looking for is not here.", "wpbootstrap"); ?></p>
 						    </section>
 						    <footer>
 						    </footer>
